@@ -1,0 +1,532 @@
+package uuu.ogkm.service;
+
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Set;
+import java.util.TreeSet;
+
+import uuu.ogkm.entity.Customer;
+import uuu.ogkm.entity.Outlet;
+import uuu.ogkm.entity.Product;
+import uuu.ogkm.entity.Size;
+import uuu.ogkm.entity.TypeColor;
+import uuu.ogkm.exception.DataInvalidException;
+import uuu.ogkm.exception.OGKMException;
+
+class ProductsDAO {
+//所有產品
+	private static final String SelectAllProducts=
+	"SELECT id, name, singer,category, unitPrice,"
+	+"photoUrl, description, shelfDate, discount,stock"
+	+" FROM products"
+	+" WHERE category <>'surrounding'";
+	List<Product> selectAllProducts()throws OGKMException {
+		List<Product> list =new ArrayList<>();
+		
+		
+		try (Connection connection =RDBConnection.getConnection();//1.2取得連線
+				PreparedStatement pstmt = connection.prepareStatement(SelectAllProducts);//3.準備指令
+				ResultSet rs = pstmt.executeQuery();//4.執行指令
+				){
+			//5.處理rs
+			while(rs.next()) {
+				Product p;
+				int discount =rs.getInt("discount");
+				if(discount>0) {
+					p=new Outlet();
+					((Outlet)p).setDiscount(discount);
+				}else 
+					p=new Product();
+				
+				p.setId(rs.getInt("id"));
+				p.setName(rs.getString("name"));
+				p.setSinger(rs.getString("singer"));
+				p.setCategory(rs.getString("category"));
+				p.setUnitPrice(rs.getDouble("unitPrice"));
+				p.setPhotoUrl(rs.getString("photoUrl"));
+				p.setDescription(rs.getString("description"));
+				p.setShelfDate(LocalDate.parse(rs.getString("shelfDate")));
+				p.setStock(rs.getInt("stock"));
+				
+				list.add(p);
+				
+			}
+		} catch (SQLException e) {
+			throw new OGKMException("[查詢產品]失敗",e);
+		}
+
+		return list;
+	}
+	
+	//最新產品
+	List<Product> selectAllNewProducts()throws OGKMException {
+		List<Product> list =new ArrayList<>();
+		
+		
+		try (Connection connection =RDBConnection.getConnection();//1.2取得連線
+				PreparedStatement pstmt = connection.prepareStatement(SelectAllProducts+" ORDER BY shelfDate DESC");//3.準備指令
+				ResultSet rs = pstmt.executeQuery();//4.執行指令
+				){
+			//5.處理rs
+			while(rs.next()) {
+				Product p;
+				int discount =rs.getInt("discount");
+				if(discount>0) {
+					p=new Outlet();
+					((Outlet)p).setDiscount(discount);
+				}else 
+					p=new Product();
+				
+				p.setId(rs.getInt("id"));
+				p.setName(rs.getString("name"));
+				p.setSinger(rs.getString("singer"));
+				p.setCategory(rs.getString("category"));
+				p.setUnitPrice(rs.getDouble("unitPrice"));
+				p.setPhotoUrl(rs.getString("photoUrl"));
+				p.setDescription(rs.getString("description"));
+				p.setShelfDate(LocalDate.parse(rs.getString("shelfDate")));
+				p.setStock(rs.getInt("stock"));
+				
+				list.add(p);
+				
+			}
+		} catch (SQLException e) {
+			throw new OGKMException("[查詢產品]失敗",e);
+		}
+
+		return list;
+	}
+	
+	//Name OR singer查詢產品
+	private static final String SelectProductsByName=
+			"SELECT id, name, singer,category, unitPrice,"
+			+ " photoUrl, description, shelfDate, discount,stock"
+			+ " FROM products WHERE  (name LIKE ? OR singer LIKE ? ) AND category <>'surrounding'";
+	List<Product> SelectProductsByName(String keyword)throws OGKMException {
+		List<Product> list =new ArrayList<>();
+		//完成產品查詢
+		
+		try(Connection connection =RDBConnection.getConnection();//1.2取得連線
+			PreparedStatement pstmt =connection.prepareStatement(SelectProductsByName);	//3.準備指令
+		) {//3.1傳入?
+			pstmt.setString(1, '%'+keyword+'%');
+			pstmt.setString(2, '%'+keyword+'%');
+			
+			try(
+			ResultSet rs= pstmt.executeQuery();//4.執行指令
+			){
+				while(rs.next()) {
+					Product p;
+					int discount =rs.getInt("discount");
+					if(discount>0) {
+						p=new Outlet();
+						((Outlet)p).setDiscount(discount);
+					}else 
+						p=new Product();
+					
+					p.setId(rs.getInt("id"));
+					p.setName(rs.getString("name"));
+					p.setSinger(rs.getString("singer"));
+					p.setCategory(rs.getString("category"));
+					p.setUnitPrice(rs.getDouble("unitPrice"));
+					p.setPhotoUrl(rs.getString("photoUrl"));
+					p.setDescription(rs.getString("description"));
+					p.setShelfDate(LocalDate.parse(rs.getString("shelfDate")));
+					p.setStock(rs.getInt("stock"));
+				
+					list.add(p);
+				}
+
+			}
+		} catch (SQLException e) {
+			throw new OGKMException("用關鍵字查詢產品 失敗",e);
+		}
+		
+	return list;
+	
+   }
+	
+	//Category查詢產品
+	private static final String  SelectProductsByCategory=
+			"SELECT id, name, singer, category, unitPrice,"
+			+ " photoUrl, description, shelfDate, discount,stock"
+			+ " FROM products WHERE category= ?" ;
+	
+	List<Product> SelectProductsByCategory(String category) throws OGKMException{
+		List<Product> list = new ArrayList<>();	
+		//完成關鍵字查詢產品
+	
+		try(Connection connection =RDBConnection.getConnection();//1.2取得連線
+				PreparedStatement pstmt =connection.prepareStatement(SelectProductsByCategory+" ORDER BY shelfDate DESC");	//3.準備指令
+			) {//3.1傳入?
+			
+			    pstmt.setString(1, category);
+				
+				try(
+				ResultSet rs= pstmt.executeQuery();//4.執行指令
+				){
+					while(rs.next()) {
+						Product p;
+						int discount =rs.getInt("discount");
+						if(discount>0) {
+							p=new Outlet();
+							((Outlet)p).setDiscount(discount);
+						}else 
+							p=new Product();
+						
+						p.setId(rs.getInt("id"));
+						p.setName(rs.getString("name"));
+						p.setSinger(rs.getString("singer"));
+						p.setCategory(rs.getString("category"));
+						p.setUnitPrice(rs.getDouble("unitPrice"));
+						p.setPhotoUrl(rs.getString("photoUrl"));
+						p.setDescription(rs.getString("description"));
+						p.setShelfDate(LocalDate.parse(rs.getString("shelfDate")));
+						p.setStock(rs.getInt("stock"));
+						
+						list.add(p);
+					}
+
+				}
+			} catch (SQLException e) {
+				throw new OGKMException("用Category關鍵字查詢產品 失敗",e);
+			}
+			
+		return list;
+		
+	   }
+	
+	//ID查詢產品
+	private static final String SelectProductsById=
+			"SELECT id, name, singer, category, products.unitPrice,"
+					+" description,shelfDate, discount,auditionUrl,"
+					+" product_surrounding.product_id,product_surrounding.typecolorname,iconUrl,"
+					+" COUNT(size) as size_count,COUNT(size)>0 as has_size,"
+					+" MIN(product_surrounding_sizes.unitprice) as min_price,"
+					+" MAX(product_surrounding_sizes.unitprice) as max_price,"
+					+" products.stock,if(COUNT(size)>0,sum(product_surrounding_sizes.stock),product_surrounding.stock)  AS surrounding_stock,"
+					+" products.photoUrl,product_surrounding.colorphotourl AS surrounding_photoUrl"
+					+" FROM products LEFT JOIN product_surrounding ON products.id=product_surrounding.product_id"
+					+" LEFT JOIN product_surrounding_sizes ON products.id=product_surrounding_sizes.product_id"
+					+" AND(product_surrounding.typecolorname=product_surrounding_sizes.typecolorname"
+					+" OR (product_surrounding.typecolorname is null AND product_surrounding_sizes.typecolorname=''))"
+					+" WHERE id=?"
+					+" GROUP BY id, product_surrounding.typecolorname";
+//			"SELECT id, name, singer, category, unitPrice, photoUrl, description,"
+//			+ "shelfDate, discount,product_id,typecolorname,iconUrl,"
+//			+ "products.stock,product_surrounding.stock AS surrounding_stock,"
+//			+ "products.photoUrl,product_surrounding.colorphotourl AS surrounding_photoUrl"
+//			+ " FROM products"
+//			+ " LEFT JOIN product_surrounding ON id=product_id"
+//			+ " WHERE id=?";
+	Product SelectProductsById(String id) throws OGKMException {
+		Product p=null;
+			//完成關鍵字查詢產品
+		
+			try(Connection connection =RDBConnection.getConnection();//1.2取得連線
+					PreparedStatement pstmt =connection.prepareStatement(SelectProductsById);	//3.準備指令
+				) {//3.1傳入?
+				
+				    pstmt.setString(1, id);
+					
+					try(
+					ResultSet rs= pstmt.executeQuery();//4.執行指令
+					){
+						while(rs.next()) {
+							//第一筆才須建立PRODUCT物件倂讀取將產品資料指派屬性
+							if(p==null) {
+							int discount =rs.getInt("discount");
+							if(discount>0) {
+								p=new Outlet();
+								((Outlet)p).setDiscount(discount);
+							}else 
+								p=new Product();
+							
+							p.setId(rs.getInt("id"));
+							p.setName(rs.getString("name"));
+							p.setSinger(rs.getString("singer"));
+							p.setCategory(rs.getString("category"));
+							p.setUnitPrice(rs.getDouble("unitPrice"));
+							p.setPhotoUrl(rs.getString("photoUrl"));
+							p.setDescription(rs.getString("description"));
+							p.setShelfDate(LocalDate.parse(rs.getString("shelfDate")));
+							p.setAuditionUrl(rs.getString("auditionUrl"));
+							p.setStock(rs.getInt("stock"));
+							p.setSizeCount(rs.getInt("size_count"));
+							}
+							
+							//讀取種類定加入產品P中
+							String typecolorname =rs.getString("typecolorname");
+							if(typecolorname!=null) {
+							TypeColor typecolor = new TypeColor();
+							typecolor.setTypecolorname(rs.getString("typecolorname"));
+							typecolor.setPhotourl(rs.getString("surrounding_photoUrl"));
+							typecolor.setIconUrl(rs.getString("iconUrl"));
+							typecolor.setStock(rs.getInt("surrounding_stock"));
+							System.out.println(typecolor);
+							p.add(typecolor);
+							}
+				            System.out.println(p);
+						}
+
+					}
+				} catch (SQLException e) {
+					throw new OGKMException("用ID關鍵字查詢產品 失敗",e);
+				}	
+		    return p;
+	}
+	
+	//以購買音樂
+	private static final String SelectMusicProductsCustomerById=
+			"SELECT products.id,orders.id, member_id,"
+			+"category,name, order_items.order_id,"
+			+"photoUrl,musicUrl,"
+			+"group_concat(distinct products.id)FROM products JOIN order_items ON order_items.product_id=products.id"
+			+" JOIN orders ON orders.id=order_items.order_id"
+			+" Where (member_id=?)AND products.category<>'Surrounding'"
+			+" GROUP BY products.id Order by order_items.order_id desc";
+	List<Product> selectMusicProductsCustomerById(String memberid) throws OGKMException{
+		List<Product> list = new ArrayList<>();	
+		//完成關鍵字查詢產品
+	
+		try(Connection connection =RDBConnection.getConnection();//1.2取得連線
+				PreparedStatement pstmt =connection.prepareStatement(SelectMusicProductsCustomerById);	//3.準備指令
+			) {//3.1傳入?
+			
+			    pstmt.setString(1, memberid);
+				
+				try(
+				ResultSet rs= pstmt.executeQuery();//4.執行指令
+				){
+					while(rs.next()) {
+						Product p =new Product();;
+						
+						p.setId(rs.getInt("id"));
+						p.setName(rs.getString("name"));
+						p.setCategory(rs.getString("category"));
+						p.setPhotoUrl(rs.getString("photoUrl"));
+						p.setMusicUrl(rs.getString("musicUrl"));
+						
+						list.add(p);
+					}
+
+				}
+			} catch (SQLException e) {
+				throw new OGKMException("查詢以購買音樂 失敗",e);
+			}
+			
+		return list;
+		
+	   }
+	
+	//音樂歌手相關歌曲
+	private static final String SelectProductsBySingerRelated=
+			"SELECT id, name, singer, category,"
+			+"photoUrl, shelfDate, stock"
+			+" FROM products"
+			+" WHERE singer LIKE ? "
+			+" AND id <> ? AND category <>'surrounding'"
+			+" Order by shelfDate desc limit 3";
+	List<Product> selectProductsBySingerRelated(String singer, String id) throws OGKMException{
+		List<Product> list = new ArrayList<>();	
+		//完成關鍵字查詢產品
+	
+		try(Connection connection =RDBConnection.getConnection();//1.2取得連線
+				PreparedStatement pstmt =connection.prepareStatement(SelectProductsBySingerRelated);	//3.準備指令
+			) {//3.1傳入?
+			
+			pstmt.setString(1, '%'+singer+'%');
+			pstmt.setString(2, id);	
+				try(
+				ResultSet rs= pstmt.executeQuery();//4.執行指令
+				){
+					while(rs.next()) {
+						Product p =new Product();;
+						
+						p.setId(rs.getInt("id"));
+						p.setName(rs.getString("name"));
+						p.setCategory(rs.getString("category"));
+						p.setPhotoUrl(rs.getString("photoUrl"));
+				
+						list.add(p);
+					}
+
+				}
+			} catch (SQLException e) {
+				throw new OGKMException("查詢以音樂歌手相關歌曲 失敗",e);
+			}
+			
+		return list;
+		
+	   }
+	
+	//SIZE
+	private static final String SELECT_PRODUCT_SIZE_SET=
+			"SELECT product_surrounding_sizes.product_id,product_surrounding_sizes.typecolorname ,"
+			+"size, ordinal, product_surrounding_sizes.stock,products.discount,"
+			+"product_surrounding_sizes.unitprice* (100-products.discount)/100 as price"
+			+" FROM product_surrounding_sizes JOIN products ON products.id=product_surrounding_sizes.product_id"
+			+" WHERE product_id =? AND typecolorname=?";
+	Set<Size> selectProductSizeSet(String productId, String typecolorname)throws OGKMException{
+		Set<Size> sizeSet = new TreeSet<>();
+		try (
+				Connection connection = RDBConnection.getConnection(); //1,2 取得連線
+				PreparedStatement pstmt = connection.prepareStatement(SELECT_PRODUCT_SIZE_SET + " ORDER BY ordinal");//3.準備指令
+			){			
+			//3.1傳入?
+			pstmt.setString(1, productId);
+			pstmt.setString(2, typecolorname);
+			
+			try(ResultSet rs = pstmt.executeQuery()){
+				while(rs.next()) {
+					Size size = new Size();
+					size.setName(rs.getString("size"));
+					size.setOrdinal(rs.getInt("ordinal"));
+					size.setUnitprice(rs.getDouble("price"));
+					size.setStock(rs.getInt("stock"));
+					sizeSet.add(size);
+				}
+			}
+		} catch (SQLException e) {
+			throw new OGKMException("[查詢產品size list]失敗", e);
+		}
+		return sizeSet;
+	}
+
+	private static final String SELECT_PRODUCT_SIZE=SELECT_PRODUCT_SIZE_SET	+" AND size=?";
+	Size selectProductSizeSet(String productId, String typecolorname, String sizeName)throws OGKMException{
+		Size size = null;
+		try (
+				Connection connection = RDBConnection.getConnection(); //1,2 取得連線
+				PreparedStatement pstmt = connection.prepareStatement(SELECT_PRODUCT_SIZE);//3.準備指令
+			){			
+			//3.1傳入?
+			pstmt.setString(1, productId);
+			pstmt.setString(2, typecolorname);
+			pstmt.setString(3, sizeName);
+			
+			try(ResultSet rs = pstmt.executeQuery()){
+				while(rs.next()) {
+					size = new Size();
+					size.setName(rs.getString("size"));
+					size.setOrdinal(rs.getInt("ordinal"));
+					size.setUnitprice(rs.getDouble("price"));
+					size.setStock(rs.getInt("stock"));					
+				}
+			}
+		} catch (SQLException e) {
+			throw new OGKMException("[查詢產品size list]失敗", e);
+		}
+		return size;
+	}
+	
+	private static final String SELECT_PRODUCT_REAL_TIME_STOCK=
+			"SELECT id, the_typecolor_name,"
+			+"size_name, real_time_stock"
+			+" FROM product_real_time_stock"
+			+" WHERE id=? HAVING the_typecolor_name=? AND size_name=?";
+	int selectProductRealTimeStock(int productId, String typecolorname, String sizeName) 
+			 throws OGKMException{	
+		int stock=0;
+		try (
+				Connection connection = RDBConnection.getConnection(); //1,2 取得連線
+				PreparedStatement pstmt = connection.prepareStatement(SELECT_PRODUCT_REAL_TIME_STOCK);//3.準備指令
+			){			
+			//3.1傳入?
+			pstmt.setInt(1, productId);
+			pstmt.setString(2, typecolorname);
+			pstmt.setString(3, sizeName);
+			int i = 0;
+			try(ResultSet rs = pstmt.executeQuery()){
+				while(rs.next()) {
+					i++;
+					stock = rs.getInt("real_time_stock");					
+				}
+				if(i!=1) throw new DataInvalidException(
+						"查詢["+productId+'-'+typecolorname+'-'+sizeName+"]realtime stock筆數("+i+")錯誤!");
+				return stock;
+			}
+		} catch (SQLException e) {
+			throw new OGKMException("[查詢產品size list]失敗", e);
+		}
+      }
+	
+	//排行
+	private static final String SelectProductsBySongTop10=
+			"SELECT id,name,singer,Sales,"
+			+"curdate() - INTERVAL 14 day "
+			+" FROM products"
+			+" WHERE category <> 'surrounding'"
+			+" order by Sales Desc limit 10 ";
+	List<Product> selectProductsBySongTop10() throws OGKMException{
+		List<Product> list = new ArrayList<>();	
+		//完成關鍵字查詢產品
+	
+		try(Connection connection =RDBConnection.getConnection();//1.2取得連線
+				PreparedStatement pstmt =connection.prepareStatement(SelectProductsBySongTop10);	//3.準備指令
+			) {//3.1傳入?
+//			pstmt.setInt(1, limit);
+				try(
+				ResultSet rs= pstmt.executeQuery();//4.執行指令
+				){
+					while(rs.next()) {
+						Product p =new Product();;
+						
+						p.setId(rs.getInt("id"));
+						p.setName(rs.getString("name"));
+						p.setSinger(rs.getString("singer"));
+						p.setSales(rs.getInt("Sales"));
+				
+						list.add(p);
+					}
+
+				}
+			} catch (SQLException e) {
+				throw new OGKMException("查詢歌曲排行 失敗",e);
+			}
+			
+		return list;
+		
+	   }
+	
+	private static final String SelectProductsBySingerTop10=
+			"SELECT singer, SUM(Sales) AS singerSales " +
+					"FROM products " +
+					"WHERE category <> 'surrounding' " +
+					"GROUP BY singer " +
+					"ORDER BY singerSales DESC " +
+					"LIMIT 10";
+	List<Product> selectProductsBySingerTop10() throws OGKMException{
+		List<Product> list = new ArrayList<>();
+		//完成關鍵字查詢產品
+
+		try(Connection connection =RDBConnection.getConnection();//1.2取得連線
+				PreparedStatement pstmt =connection.prepareStatement(SelectProductsBySingerTop10);	//3.準備指令
+			) {//3.1傳入?
+//			pstmt.setInt(1, limit);
+				try(
+				ResultSet rs= pstmt.executeQuery();//4.執行指令
+				){
+					while(rs.next()) {
+						Product p =new Product();;
+
+						p.setSinger(rs.getString("singer"));
+						p.setSales(rs.getInt("singerSales"));
+
+						list.add(p);
+					}
+
+				}
+			} catch (SQLException e) {
+				throw new OGKMException("查詢音樂歌手排行 失敗",e);
+			}
+
+		return list;
+
+	   }
+}

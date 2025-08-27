@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://$PROJECT_DIR$/OGKM_Lib/OGKM_Lib.iml" filepath="$PROJECT_DIR$/OGKM_Lib/OGKM_Lib.iml" />
+      <module fileurl="file://$PROJECT_DIR$/OGKM_Web/OGKM_Web.iml" filepath="$PROJECT_DIR$/OGKM_Web/OGKM_Web.iml" />
+    </modules>
+  </component>
+</project>

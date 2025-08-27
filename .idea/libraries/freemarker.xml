@@ -1,0 +1,12 @@
+<component name="libraryTable">
+  <library name="freemarker">
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/OGKM_Lib/lib/freemarker.jar!/" />
+      <root url="jar://$PROJECT_DIR$/OGKM_Lib/lib/javax.mail.jar!/" />
+      <root url="jar://$PROJECT_DIR$/OGKM_Lib/lib/javax_activation.jar!/" />
+      <root url="jar://$PROJECT_DIR$/OGKM_Lib/lib/mysql-connector-java-8.0.27.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>
