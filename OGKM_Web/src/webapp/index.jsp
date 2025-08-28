@@ -497,18 +497,19 @@
   <script>
     /*廣告*/
 
-    (function () {
-      var outer = document.getElementById("outer");
-      var imgList = document.getElementById("imgList");
-      var navContainer = document.getElementById("navContainer");
-      var prevbtn = document.getElementById("prevbtn");
-      var nextbtn = document.getElementById("nextbtn");
-      var imgArr = document.querySelectorAll("#imgList>li>img");
-      var allA = document.querySelectorAll("#navContainer>a");
+    (function () { // 自執行函數，避免全局污染
+      // 取得 HTML 元素
+      var outer = document.getElementById("outer");         // 輪播容器
+      var imgList = document.getElementById("imgList");     // 包含所有圖片的 ul
+      var navContainer = document.getElementById("navContainer"); // 導航點容器
+      var prevbtn = document.getElementById("prevbtn");     // 左按鈕
+      var nextbtn = document.getElementById("nextbtn");     // 右按鈕
+      var imgArr = document.querySelectorAll("#imgList>li>img"); // 所有圖片
+      var allA = document.querySelectorAll("#navContainer>a");   // 所有導航點
 
-      var index = 0;
-      var width = outer.clientWidth;
-      var timer;
+      var index = 0;          // 當前圖片索引
+      var width = outer.clientWidth; // 外層容器寬度
+      var timer;              // 自動輪播計時器
 
       // 取得元素樣式
       function getStyle(obj, name) {
@@ -517,126 +518,127 @@
 
       // 計算每張圖片寬度 & 設置 imgList 寬度
       function updateWidth() {
-        width = outer.clientWidth;           // 取 clientWidth，排除 padding/border
+        width = outer.clientWidth; // 取容器寬度（不含 padding/border）
         imgArr.forEach(function(img) {
-          img.parentElement.style.width = width + "px";  // 每個 li 寬度 = outer 寬度
+          img.parentElement.style.width = width + "px"; // 設置每個 li 寬度 = outer 寬度
         });
-        imgList.style.width = width * imgArr.length + "px"; // 總寬
+        imgList.style.width = width * imgArr.length + "px"; // 設置 ul 總寬
         imgList.style.left = -width * index + "px";        // 保持目前圖片位置
       }
 
-      // 移動動畫
-      function move(obj, attr, target, speed, callback) {
-        clearInterval(obj.timer);
-        var current = parseInt(getStyle(obj, attr));
-        if (current > target) speed = -speed;
-        obj.timer = setInterval(function () {
-          var oldValue = parseInt(getStyle(obj, attr));
-          var newValue = oldValue + speed;
-          if ((speed < 0 && newValue < target) || (speed > 0 && newValue > target)) {
-            newValue = target;
-          }
-          obj.style[attr] = newValue + "px";
-          if (newValue == target) {
-            clearInterval(obj.timer);
-            callback && callback();
-          }
-        }, 10);
+      // 移動到指定索引的圖片（帶動畫）
+      function moveTo(i) {
+        index = i;                                   // 更新索引
+        imgList.style.transition = "left 0.5s";      // 設置動畫過渡
+        imgList.style.left = -width * index + "px";  // 設置左偏移
+        setNav();                                    // 更新導航點樣式
       }
 
-      // 設置 nav 顯示
+      // 設置導航點顯示
       function setNav() {
-        allA.forEach(function (a) { a.style.backgroundColor = ""; });
-        allA[index].style.backgroundColor = "rgb(255, 238, 5)";
+        allA.forEach(function (a) { a.style.backgroundColor = ""; }); // 清空所有導航點顏色
+        allA[index].style.backgroundColor = "rgb(255, 238, 5)";       // 標記當前圖片導航點
       }
 
-      // 自動切換
+      // 自動切換圖片
       function autoChange() {
-          clearInterval(timer); // 先確保不重複計時
-          timer = setInterval(function () {
-              index++;
-              if (index >= imgArr.length) {
-                  index = 0;
-                  // 立刻跳回第一張
-                  imgList.style.left = "0px";
-                  setNav();
-              } else {
-                  // 普通滑動動畫
-                  move(imgList, "left", -width * index, 20, setNav);
-              }
-          }, 3000);
+        clearInterval(timer); // 清除之前的計時器，避免重複
+        timer = setInterval(function () {
+          if (index + 1 >= imgArr.length) {        // 如果到最後一張
+            index = 0;                             // 重置索引為第一張
+            imgList.style.transition = "none";     // 立即跳回第一張，取消動畫
+            imgList.style.left = "0px";            // 設置左偏移
+            setTimeout(function () {
+              imgList.style.transition = "left 0.5s"; // 恢復動畫
+              moveTo(0);                              // 動畫過渡到第一張
+            }, 50);
+          } else {                                 // 普通切換
+            moveTo(index + 1);
+          }
+        }, 3000); // 每 3 秒切換一次
       }
 
+      // 綁定導航點點擊事件
       function bindNav() {
-          for (var i = 0; i < allA.length; i++) {
-              (function(i){
-                  allA[i].onclick = function () {
-                      clearInterval(timer);       // 停止自動輪播
-                      index = i;                  // 設定當前索引
-                      imgList.style.left = -width * index + "px";  // 立刻跳到目標圖片
-                      setNav();                   // 更新導航點樣式
-                      autoChange();               // 重新啟動自動輪播
-                  }
-              })(i);
-          }
+        for (var i = 0; i < allA.length; i++) {
+          (function (i) {                        // 閉包保留索引
+            allA[i].onclick = function () {
+              clearInterval(timer);              // 停止自動輪播
+              moveTo(i);                          // 立刻跳到點擊的圖片
+              autoChange();                        // 重新啟動自動輪播
+            };
+          })(i);
+        }
       }
 
       // 綁定左右按鈕
       function bindBtn() {
         prevbtn.onclick = function () {
-          clearInterval(timer);
-          if (index > 0) index--;
-          setNav();
-          move(imgList, "left", -width * index, 20, autoChange);
+          clearInterval(timer);                   // 停止自動輪播
+          if (index > 0) {
+            moveTo(index - 1);                    // 上一張
+          } else {
+            moveTo(imgArr.length - 1);            // 循環到最後一張
+          }
+          autoChange();                            // 重新啟動自動輪播
         };
+
         nextbtn.onclick = function () {
-          clearInterval(timer);
-          if (index < imgArr.length - 1) index++;
-          setNav();
-          move(imgList, "left", -width * index, 20, autoChange);
+          clearInterval(timer);                   // 停止自動輪播
+          if (index < imgArr.length - 1) {
+            moveTo(index + 1);                    // 下一張
+          } else {
+            moveTo(0);                             // 循環到第一張
+          }
+          autoChange();                            // 重新啟動自動輪播
         };
       }
 
-      // 綁定觸控事件
+      // 綁定觸控事件（滑動切換）
       function bindTouch() {
         var startX = 0, distanceX = 0, isMove = false;
+
         outer.addEventListener('touchstart', function (e) {
-          clearInterval(timer);
-          startX = e.touches[0].clientX;
+          clearInterval(timer);                    // 停止自動輪播
+          startX = e.touches[0].clientX;          // 記錄起始手指位置
         });
+
         outer.addEventListener('touchmove', function (e) {
-          distanceX = e.touches[0].clientX - startX;
-          isMove = true;
-          move(imgList, "left", -width * index + distanceX, 20);
+          distanceX = e.touches[0].clientX - startX; // 計算滑動距離
+          isMove = true;                             // 標記已滑動
+          imgList.style.transition = "none";         // 取消動畫
+          imgList.style.left = -width * index + distanceX + "px"; // 跟隨手指移動
         });
+
         outer.addEventListener('touchend', function () {
-          if (isMove && Math.abs(distanceX) > width / 3) {
-            index += distanceX > 0 ? -1 : 1;
-            if (index < 0) index = 0;
-            if (index >= imgArr.length) index = imgArr.length - 1;
+          if (isMove) {
+            if (Math.abs(distanceX) > width / 3) {      // 滑動超過三分之一寬度才切換
+              if (distanceX > 0) index = Math.max(0, index - 1); // 向右滑上一張
+              else index = Math.min(imgArr.length - 1, index + 1); // 向左滑下一張
+            }
+            moveTo(index);       // 動畫移動到最終位置
+            autoChange();        // 重新啟動自動輪播
           }
-          move(imgList, "left", -width * index, 20, autoChange);
-          setNav();
-          isMove = false;
+          isMove = false;         // 重置滑動狀態
         });
       }
 
-      // 初始化
+      // 初始化函數
       function init() {
-        updateWidth();
-        setNav();
-        bindNav();
-        bindBtn();
-        bindTouch();
-        autoChange();
+        updateWidth();   // 設置圖片寬度
+        setNav();        // 設置導航點
+        bindNav();       // 綁定導航點事件
+        bindBtn();       // 綁定左右按鈕
+        bindTouch();     // 綁定觸控事件
+        autoChange();    // 啟動自動輪播
       }
 
       // 首次執行
       init();
 
-      // 視窗大小改變時更新
+      // 視窗大小改變時更新寬度
       window.addEventListener("resize", function () {
-        updateWidth();
+        updateWidth();  // 更新圖片寬度及位置
       });
     })();
 
