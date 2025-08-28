@@ -27,3 +27,7 @@ bin/
 
 ### Mac OS ###
 .DS_Store
+
+apache-tomcat-11.0.9
+OGKM_Lib/build
+OGKM_Web/build
