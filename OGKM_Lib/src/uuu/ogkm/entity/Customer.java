@@ -175,8 +175,6 @@ public class Customer {
 
   /**
    * 計算客戶的年齡
-   *
-   * @return int型態的客戶年齡
    */
   public int getAge() {
     return this.getAge(this.birthday);
@@ -184,9 +182,7 @@ public class Customer {
 
   /**
    * 計算指定生日birthday的年齡
-   *
    * @param birthday:指定生日birthday
-   * @return int型態的年齡
    */
   public int getAge(LocalDate birthday) {
     int thisYear = LocalDate.now().getYear();
