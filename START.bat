@@ -33,11 +33,11 @@ echo [3/6] 複製編譯好的 Web Classes 到 WEB-INF\classes
 if not exist "%OGKM_WEB_EXPLODED%\WEB-INF\classes" mkdir "%OGKM_WEB_EXPLODED%\WEB-INF\classes"
 if exist "%OGKM_WEB_BUILD%\com" xcopy /E /I /Y "%OGKM_WEB_BUILD%\com" "%OGKM_WEB_EXPLODED%\WEB-INF\classes\com"
 
-echo [3/5] 刪除 Tomcat 舊的 OGKM_Web
-if exist "%TOMCAT_WEBAPPS%\OGKM_Web" rmdir /S /Q "%TOMCAT_WEBAPPS%\OGKM_Web"
+echo [3/5] 刪除 Tomcat 舊的 OGKM
+if exist "%TOMCAT_WEBAPPS%\OGKM" rmdir /S /Q "%TOMCAT_WEBAPPS%\OGKM"
 
 echo [4/5] 複製 Exploded 目錄到 Tomcat
-xcopy /E /I /Y "%OGKM_WEB_EXPLODED%" "%TOMCAT_WEBAPPS%\OGKM_Web"
+xcopy /E /I /Y "%OGKM_WEB_EXPLODED%" "%TOMCAT_WEBAPPS%\OGKM"
 
 REM echo [5/5] 啟動 Tomcat
 REM start "" "%TOMCAT_BIN%\startup.bat" >nul 2>&1
@@ -55,5 +55,5 @@ REM  org.apache.catalina.startup.Bootstrap start > "%CATALINA_HOME%\logs\console
 type "%CATALINA_HOME%\logs\console.log"
 
   
-echo 部署完成：http://localhost:8080/OGKM_Web
+echo 部署完成：http://localhost:8080/OGKM
 REM pause
