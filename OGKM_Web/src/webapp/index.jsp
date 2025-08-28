@@ -36,8 +36,7 @@
         <ul id="imgList">
           <% for(int i=1;i<11;i++) {%>
                <li><img src="<%=request.getContextPath()%>/images/ads/<%=i%>.png" /></li>
-              <% } %>
-<%--           <li><img src="<%=request.getContextPath()%>/images/ads/2.png" /></li> --%>
+          <% } %>
         </ul>
 
         <div class="touchbtn">
@@ -497,36 +496,40 @@
   </style>
   <script>
     /*廣告*/
-    $(document).ready(init);
-    function init() {
-      // window.onload = function () {
+
+    (function () {
+      var outer = document.getElementById("outer");
       var imgList = document.getElementById("imgList");
       var navContainer = document.getElementById("navContainer");
-      var outer = document.getElementById("outer");
       var prevbtn = document.getElementById("prevbtn");
       var nextbtn = document.getElementById("nextbtn");
       var imgArr = document.querySelectorAll("#imgList>li>img");
+      var allA = document.querySelectorAll("#navContainer>a");
 
-      //-- 獲取元素樣式，最低兼容ie8
+      var index = 0;
+      var width = outer.clientWidth;
+      var timer;
+
+      // 取得元素樣式
       function getStyle(obj, name) {
-        if (window.getComputedStyle) {
-          return getComputedStyle(obj, null)[name];
-        } else {
-          return obj.currentStyle[name];
-        }
+        return window.getComputedStyle ? getComputedStyle(obj, null)[name] : obj.currentStyle[name];
       }
-      //-- 獲取outer的寬度
-      var getOuterWidth = getStyle(outer, "width");
-      var widthObject = getOuterWidth.match(/\d*/);
-      var width = widthObject[0];
-      //-- 根據圖片的數量設置ul的總寬度
-      imgList.style.width = width * imgArr.length + 50 + "px";
+
+      // 計算每張圖片寬度 & 設置 imgList 寬度
+      function updateWidth() {
+        width = outer.clientWidth;           // 取 clientWidth，排除 padding/border
+        imgArr.forEach(function(img) {
+          img.parentElement.style.width = width + "px";  // 每個 li 寬度 = outer 寬度
+        });
+        imgList.style.width = width * imgArr.length + "px"; // 總寬
+        imgList.style.left = -width * index + "px";        // 保持目前圖片位置
+      }
+
+      // 移動動畫
       function move(obj, attr, target, speed, callback) {
         clearInterval(obj.timer);
         var current = parseInt(getStyle(obj, attr));
-        if (current > target) {
-          speed = -speed;
-        }
+        if (current > target) speed = -speed;
         obj.timer = setInterval(function () {
           var oldValue = parseInt(getStyle(obj, attr));
           var newValue = oldValue + speed;
@@ -538,104 +541,106 @@
             clearInterval(obj.timer);
             callback && callback();
           }
-        }, 5);
+        }, 10);
       }
-      //設置默認選中的效果
-      var index = 0;
-      var allA = document.querySelectorAll("#navContainer>a");
-      allA[index].style.backgroundColor = "rgb(255, 238, 5)";
-      //-- 正常開啟自動切換函數
-      autoChange();
-      function setA() {
-        if (index >= imgArr.length) {
-          index = 0;
-          imgList.style.left = 0;
-        }
-      }
-      function setRed() {
-        for (var i = 0; i < allA.length; i++) {
-          allA[i].style.backgroundColor = "";
-        }
+
+      // 設置 nav 顯示
+      function setNav() {
+        allA.forEach(function (a) { a.style.backgroundColor = ""; });
         allA[index].style.backgroundColor = "rgb(255, 238, 5)";
       }
-      var timer;
-      //--自動切換圖片
+
+      // 自動切換
       function autoChange() {
-        timer = setInterval(function () {
-          index++;
-          index %= imgArr.length;
-          move(imgList, "left", -width * index, 20, function () {
-            setA();
-            setRed();
-          });
-        }, 3000);
+          clearInterval(timer); // 先確保不重複計時
+          timer = setInterval(function () {
+              index++;
+              if (index >= imgArr.length) {
+                  index = 0;
+                  // 立刻跳回第一張
+                  imgList.style.left = "0px";
+                  setNav();
+              } else {
+                  // 普通滑動動畫
+                  move(imgList, "left", -width * index, 20, setNav);
+              }
+          }, 3000);
       }
-      //--實現點擊導航點切換圖片
-      //--調用setA、move、autochange函數
-      for (var i = 0; i < allA.length; i++) {
-        allA[i].num = i;
-        allA[i].onclick = function () {
-          clearInterval(timer);
-          index = this.num;
-          setRed();
-          move(imgList, "left", -width * index, 20, function () {
-            autoChange();
-          });
-        }
+
+      function bindNav() {
+          for (var i = 0; i < allA.length; i++) {
+              (function(i){
+                  allA[i].onclick = function () {
+                      clearInterval(timer);       // 停止自動輪播
+                      index = i;                  // 設定當前索引
+                      imgList.style.left = -width * index + "px";  // 立刻跳到目標圖片
+                      setNav();                   // 更新導航點樣式
+                      autoChange();               // 重新啟動自動輪播
+                  }
+              })(i);
+          }
+      }
+
+      // 綁定左右按鈕
+      function bindBtn() {
         prevbtn.onclick = function () {
           clearInterval(timer);
-          if (index != 0) {
-            index = index - 1;
-          }
-          setRed();
-          move(imgList, "left", -width * index, 20, function () {
-            autoChange();
-          });
-        }
+          if (index > 0) index--;
+          setNav();
+          move(imgList, "left", -width * index, 20, autoChange);
+        };
         nextbtn.onclick = function () {
           clearInterval(timer);
-          if (index != allA.length - 1) {
-            index = index + 1;
-          }
-          setRed();
-          //UL,向左,寬度:初始寬度(-width * index),速度
-          move(imgList, "left", -width * index, 20, function () {
-            autoChange();
-          });
-        }
+          if (index < imgArr.length - 1) index++;
+          setNav();
+          move(imgList, "left", -width * index, 20, autoChange);
+        };
       }
-      var startX = 0;
-      var moveX = 0;
-      var distanceX = 0;
-      var isMove = false;
-      outer.addEventListener('touchstart', function (e) {
-        clearInterval(timer); //--清除定時器,要記得事件結束之后再打開
-        startX = e.touches[0].clientX;  //--觸摸點的橫坐標
-      });
-      outer.addEventListener('touchmove', function (e) {
-        moveX = e.touches[0].clientX;//--獲取當前手的橫坐標
-        distanceX = moveX - startX; //--移動的距離=現在-初始
-        isMove = true;//證明滑動過
-        move(imgList, "left", -width * index + distanceX, 20, function () { });
-      });
-      outer.addEventListener('touchend', function () {
-        if (isMove && Math.abs(distanceX) > width / 3) {
-          if (distanceX > 0 && index != 0) {
-            index = index - 1;
+
+      // 綁定觸控事件
+      function bindTouch() {
+        var startX = 0, distanceX = 0, isMove = false;
+        outer.addEventListener('touchstart', function (e) {
+          clearInterval(timer);
+          startX = e.touches[0].clientX;
+        });
+        outer.addEventListener('touchmove', function (e) {
+          distanceX = e.touches[0].clientX - startX;
+          isMove = true;
+          move(imgList, "left", -width * index + distanceX, 20);
+        });
+        outer.addEventListener('touchend', function () {
+          if (isMove && Math.abs(distanceX) > width / 3) {
+            index += distanceX > 0 ? -1 : 1;
+            if (index < 0) index = 0;
+            if (index >= imgArr.length) index = imgArr.length - 1;
           }
-          else if (distanceX < 0 && index != imgArr.length - 1) {
-            index = index + 1;
-          }
-          move(imgList, "left", -width * index, 20, function () { });
-        }
-        else if (isMove && Math.abs(distanceX) < width / 3) {
-          move(imgList, "left", -width * index, 20, function () { });
-        }
-        setRed();
+          move(imgList, "left", -width * index, 20, autoChange);
+          setNav();
+          isMove = false;
+        });
+      }
+
+      // 初始化
+      function init() {
+        updateWidth();
+        setNav();
+        bindNav();
+        bindBtn();
+        bindTouch();
         autoChange();
+      }
+
+      // 首次執行
+      init();
+
+      // 視窗大小改變時更新
+      window.addEventListener("resize", function () {
+        updateWidth();
       });
-    }
- /*廣告 END*/
+    })();
+
+    /*廣告 END*/
   </script>
 </body>
 
