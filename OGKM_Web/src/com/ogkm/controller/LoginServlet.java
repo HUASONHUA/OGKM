@@ -35,20 +35,12 @@ public class LoginServlet extends HttpServlet {
   private static final long serialVersionUID = 1L;
 
   /**
-   * @see HttpServlet#HttpServlet()
-   */
-  public LoginServlet() {
-    super();
-    // TODO Auto-generated constructor stub
-  }
-
-  /**
    * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse
    * response)
    */
   protected void doPost(HttpServletRequest request, HttpServletResponse response)
       throws ServletException, IOException {
-    List<String> errors = new ArrayList<String>();
+    List<String> errors = new ArrayList<>();
 
     HttpSession session = request.getSession();
     request.setCharacterEncoding("UTF-8");//編碼設定要在getParameter前
@@ -58,7 +50,7 @@ public class LoginServlet extends HttpServlet {
     String captcha = request.getParameter("captcha");
 //		System.out.println(account);
 //		System.out.println(password);
-    System.out.println("captcha=" + captcha);
+//    System.out.println("captcha=" + captcha);
 
     // 1檢查
     List<String> missing = new ArrayList<>();
@@ -67,12 +59,6 @@ public class LoginServlet extends HttpServlet {
     if (captcha == null || captcha.isEmpty()) missing.add("驗證碼");
 
     System.out.println("LoginServlet Session ID: " + request.getSession().getId());
-    Enumeration<String> attributeNames = session.getAttributeNames();
-    while (attributeNames.hasMoreElements()) {
-      String name = attributeNames.nextElement();
-      Object value = session.getAttribute(name);
-      System.out.println("Session attribute: " + name + " = " + value);
-    }
     String oidCaptcha = (String) session.getAttribute("LoginCaptchaServlet");
     System.out.println("oidCaptcha=" + oidCaptcha);
 
