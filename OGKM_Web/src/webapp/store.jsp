@@ -41,24 +41,19 @@
   String NEW=request.getParameter("NEW"); 
   String keywordname=request.getParameter("keywordname"); 
   String keywordsinger=request.getParameter("keywordsinger"); 
-  //TODO: 加上分類查詢 
-  
-  
-  
+  //後續加上分類查詢
+
   //2.呼叫商業邏輯 
-    ProductService ps=new ProductService(); 
-    List<Product> list;
-    if (keyword != null && keyword.length() > 0) {
+  ProductService ps=new ProductService();
+  List<Product> list;
+  if (keyword != null && keyword.length() > 0) {
     list = ps.getSelectProductsByName(keyword);
-    } else if (category != null && category.length() > 0) {
+  } else if (category != null && category.length() > 0) {
     list = ps.getSelectProductsByCategory(category);
-//     }else if (NEW != null) {
-//         list = ps.getAllNewProducts();
-    } else {
-    //list = ps.getAllProducts();//100筆改成查最新上架
-    	list = ps.getAllNewProducts();
-    }
-    %>
+  } else {
+    list = ps.getAllNewProducts();
+  }
+  %>
 
     <div id="storepackage">
       <div class="rank">
@@ -206,11 +201,38 @@
         padding-left: 0.5em;
       }
 
-      /*歌手排行*/
+      /*歌手排行
       #ranksinger {
         box-shadow: #000 1px 1px 5px 0px;
         box-shadow: rgb(204, 219, 232) 3px 3px 6px 0px inset, rgba(255, 255, 255, 0.5) -3px -3px 6px 1px inset;
         background-color: rgba(36, 36, 36,0.65);
+      }
+      */
+
+      /*歌手排行 - 玻璃質感*/
+      #ranksinger {
+        position: relative;
+        background: #1c0619e8;
+        border: 1px solid #191919;
+        border-radius: .4em;
+        box-shadow: inset 2px 3px 0px 0px rgb(1 5 12 / 81%), 2px 3px 0px 0px rgba(0, 0, 0, 0.4);
+        transform: perspective(1000px) rotateX(4deg);
+      }
+      #ranksinger:after {
+        position: absolute;
+        content: "";
+        display: block;
+        pointer-events: none;
+        top: 0;
+        left: 70%;
+        width: 100%;
+        height: 100%;
+        transform: skew(18deg);
+        background: linear-gradient(
+          to bottom,
+          hsla(0, 0%, 100%, 0.1) 0%,
+          hsla(0, 0%, 100%, 0) 100%
+        );
       }
 
       #ranksinger ul {
@@ -273,11 +295,30 @@
 
       /*歌手排行 END*/
 
-      /*歌曲排行*/ 
+      /*歌曲排行 - 玻璃質感*/
       #ranksong {
-        box-shadow: #000 1px 1px 5px 0px;
-        box-shadow: rgb(204, 219, 232) 3px 3px 6px 0px inset, rgba(255, 255, 255, 0.5) -3px -3px 6px 1px inset;
-        background-color: rgba(36, 36, 36,0.65);
+        position: relative;
+        background: #532503;
+        border: 1px solid #191919;
+        border-radius: .4em;
+        box-shadow: inset 2px 3px 0px 0px rgb(1 5 12 / 81%), 2px 3px 0px 0px rgba(0, 0, 0, 0.4);
+        transform: perspective(1000px) rotateX(4deg);
+      }
+      #ranksong:after {
+        position: absolute;
+        content: "";
+        display: block;
+        pointer-events: none;
+        top: 0;
+        left: 70%;
+        width: 100%;
+        height: 100%;
+        transform: skew(18deg);
+        background: linear-gradient(
+          to bottom,
+          hsla(0, 0%, 100%, 0.1) 0%,
+          hsla(0, 0%, 100%, 0) 100%
+        );
       }
 
       #ranksong ul {
@@ -337,11 +378,9 @@
       #ranksong li:nth-child(11):before {
         margin-right: 0.5em;
       }
-
       /*歌曲排行 END*/
 
       /*排行榜 END*/
-
 
       /*商品表*/
       .songcontent {
