@@ -20,15 +20,14 @@ import uuu.ogkm.exception.OGKMException;
 
 class ProductsDAO {
 //所有產品
-	private static final String SelectAllProducts=
+  private static final String SelectAllProducts=
 	"SELECT id, name, singer,category, unitPrice,"
 	+"photoUrl, description, shelfDate, discount,stock"
 	+" FROM products"
 	+" WHERE category <>'surrounding'";
 	List<Product> selectAllProducts()throws OGKMException {
 		List<Product> list =new ArrayList<>();
-		
-		
+
 		try (Connection connection =RDBConnection.getConnection();//1.2取得連線
 				PreparedStatement pstmt = connection.prepareStatement(SelectAllProducts);//3.準備指令
 				ResultSet rs = pstmt.executeQuery();//4.執行指令

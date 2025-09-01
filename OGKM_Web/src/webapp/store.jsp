@@ -42,17 +42,6 @@
     String keywordname=request.getParameter("keywordname");
     String keywordsinger=request.getParameter("keywordsinger");
     //後續加上分類查詢
-
-    //2.呼叫商業邏輯
-    ProductService ps=new ProductService();
-    List<Product> list;
-    if (keyword != null && keyword.length() > 0) {
-      list = ps.getSelectProductsByName(keyword);
-    } else if (category != null && category.length() > 0) {
-      list = ps.getSelectProductsByCategory(category);
-    } else {
-      list = ps.getAllNewProducts();
-    }
   %>
 
   <div id="storepackage">
@@ -88,9 +77,20 @@
     </div>
 
     <div class="songcontent">
-      <% if (list !=null && list.size()> 0) {
-        for (int i = 0; i < list.size(); i++) {
-          Product p=list.get(i);
+      <%
+        ProductService ps=new ProductService();
+        List<Product> list;
+        if (keyword != null && keyword.length() > 0) {
+          list = ps.getSelectProductsByName(keyword);
+        } else if (category != null && category.length() > 0) {
+          list = ps.getSelectProductsByCategory(category);
+        } else {
+          list = ps.getAllNewProducts();
+        }
+
+        if (list !=null && list.size()> 0) {
+          for (int i = 0; i < list.size(); i++) {
+            Product p=list.get(i);
       %>
           <div class="picturebag">
             <a href="javascript:getProduct(<%=p.getId()%>)">
