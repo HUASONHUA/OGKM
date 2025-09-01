@@ -97,8 +97,7 @@
 	<% String productId=request.getParameter("productId"); 
 	Product p=null; 
 	if(productId!=null){ 
-		ProductService ps=new
-		ProductService();
+		ProductService ps=new ProductService();
 		p=ps.getSelectProductsById(productId); 
 		} if(p==null){ %>
 		<p>查無此商品(id=<%=productId %>)</p>

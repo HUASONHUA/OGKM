@@ -25,7 +25,7 @@
   <div id="muiscmenu">
     <ul class="muiscmenu">
       <li><a href="<%=request.getRequestURI()%>">全部</a></li>
-<%--       <li><a href="<%=request.getRequestURI()%>?NEW">NEW</a></li> --%>
+      <li><a href="<%=request.getRequestURI()%>?NEW">NEW</a></li>
       <li><a href="<%=request.getRequestURI()%>?category=JPOP">J-POP</a></li>
       <li><a href="<%=request.getRequestURI()%>?category=ANIME">ANIME</a></li>
       <li><a href="<%=request.getRequestURI()%>?category=VOCALOID">VOCALOID</a></li>
@@ -36,91 +36,76 @@
   </div>
 
   <% //1.取得REQUEST的FORM DATA 
-  String keyword=request.getParameter("keyword"); 
-  String category=request.getParameter("category"); 
-  String NEW=request.getParameter("NEW"); 
-  String keywordname=request.getParameter("keywordname"); 
-  String keywordsinger=request.getParameter("keywordsinger"); 
-  //後續加上分類查詢
+    String keyword=request.getParameter("keyword");
+    String category=request.getParameter("category");
+    String NEW=request.getParameter("NEW");
+    String keywordname=request.getParameter("keywordname");
+    String keywordsinger=request.getParameter("keywordsinger");
+    //後續加上分類查詢
 
-  //2.呼叫商業邏輯 
-  ProductService ps=new ProductService();
-  List<Product> list;
-  if (keyword != null && keyword.length() > 0) {
-    list = ps.getSelectProductsByName(keyword);
-  } else if (category != null && category.length() > 0) {
-    list = ps.getSelectProductsByCategory(category);
-  } else {
-    list = ps.getAllNewProducts();
-  }
+    //2.呼叫商業邏輯
+    ProductService ps=new ProductService();
+    List<Product> list;
+    if (keyword != null && keyword.length() > 0) {
+      list = ps.getSelectProductsByName(keyword);
+    } else if (category != null && category.length() > 0) {
+      list = ps.getSelectProductsByCategory(category);
+    } else {
+      list = ps.getAllNewProducts();
+    }
   %>
 
-    <div id="storepackage">
-      <div class="rank">
-        <div id="ranksinger">
-          <ul>
-            <h2>歌手排行</h2>
-            <%  ProductService psSingerTop10=new ProductService(); 
-                List<Product> listSingerTop10;
-                listSingerTop10 = psSingerTop10.getselectProductsBySingerTop10();
-                if (listSingerTop10 !=null && listSingerTop10.size()> 0) {
-//                  for(int i=1;i<11;i++) {
-                	 for(int i=0;i<listSingerTop10.size();i++) {  
-             	Product pSingerTop10=listSingerTop10.get(i); 
-            %>
-            <li><a><%=pSingerTop10.getSinger() %> </a></li>
-            <% } }%>
-<%--               <li><a><%= String.format("%02d",i) %></a></li> --%>
-            
-          </ul>
-        </div>
-        <div id="ranksong">
-          <ul>
-            <h2>歌曲排行</h2>
-             <% ProductService psSongTop10=new ProductService(); 
-                List<Product> listSongTop10;
-                listSongTop10 = psSongTop10.getselectProductsBySingerTop10();
-             if (listSongTop10 !=null && listSongTop10.size()> 0) {
-//             for(int i=1;i<11;i++) {  
-            	for(int i=0;i<listSingerTop10.size();i++) {  
-            
-            	Product pSongTop10=listSongTop10.get(i); 
-            %>
-            <li><a><%=pSongTop10.getName() %> </a></li>
-            <%}  }%>
-          </ul>
-        </div>
+  <div id="storepackage">
+    <div class="rank">
+      <div id="ranksinger">
+        <ul>
+          <h2>歌手排行</h2>
+          <%  ProductService psSingerTop10=new ProductService();
+              List<Product> listSingerTop10;
+              listSingerTop10 = psSingerTop10.getselectProductsBySingerTop10();
+              if (listSingerTop10 !=null && listSingerTop10.size()> 0) {
+                for(int i=0;i<listSingerTop10.size();i++) {
+                Product pSingerTop10=listSingerTop10.get(i);
+          %>
+          <li><a><%=pSingerTop10.getSinger() %></a></li>
+          <% } } %>
+        </ul>
       </div>
+      <div id="ranksong">
+        <ul>
+          <h2>歌曲排行</h2>
+           <% ProductService psSongTop10=new ProductService();
+             List<Product> listSongTop10;
+             listSongTop10 = psSongTop10.getselectProductsBySingerTop10();
+             if (listSongTop10 != null && listSongTop10.size() > 0) {
+               for(int i=0;i<listSingerTop10.size();i++) {
+            	 Product pSongTop10=listSongTop10.get(i);
+           %>
+           <li><a><%=pSongTop10.getName() != null ? pSongTop10.getName() : "" %></a></li>
+           <% } } %>
+        </ul>
+      </div>
+    </div>
 
-      <div class="songcontent">
-        <% if (list !=null && list.size()> 0) {
-
-          for (int i = 0; i < list.size(); i++) { 
-        	  Product p=list.get(i); %>
-
-            <div class="picturebag">
-<%--               <% if(!(p.getCategory().equals("Surrounding"))){ %> --%>
-                <a href="javascript:getProduct(<%=p.getId()%>)">
-<%--               <%}else{ %> --%>
-<%--                 <a href="javascript:getProduct1(<%=p.getId()%>)"> --%>
-<%--               <%}%> --%>
-                  <img class="productimg" src="<%=p.getPhotoUrl()%>" onerror='getMPERRImg(this)'>
-                </a>
-<%--               <% if(!(p.getCategory().equals("Surrounding"))){ %> --%>
-                <a href="ProductDescriptionmain.jsp?productId=<%=p.getId()%>">
-<%--               <%}else{ %> --%>
-<%--                 <a href="ProductDescriptionmain1.jsp?productId=<%=p.getId()%>"> --%>
-<%--               <%}%> --%>
-                  <div class="pictureword">
-                    <div><%=p.getName()%></div>
-                    <div><%=p.getSinger()%></div>
-                  </div>
-                </a>
-            </div>
-            <%}%>
-        <%} else {%>
+    <div class="songcontent">
+      <% if (list !=null && list.size()> 0) {
+        for (int i = 0; i < list.size(); i++) {
+          Product p=list.get(i);
+      %>
+          <div class="picturebag">
+            <a href="javascript:getProduct(<%=p.getId()%>)">
+              <img class="productimg" src="<%=p.getPhotoUrl()%>" onerror='getMPERRImg(this)'>
+            </a>
+            <a href="ProductDescriptionmain.jsp?productId=<%=p.getId()%>">
+              <div class="pictureword">
+                <div><%=p.getName()%></div>
+                <div><%=p.getSinger()%></div>
+              </div>
+            </a>
+          </div>
+        <% } } else { %>
           <p>查無產品</p>
-        <%}%>
+      <%}%>
       </div>
     </div>
     <div id="pfancybox"></div>
@@ -304,6 +289,7 @@
         box-shadow: inset 2px 3px 0px 0px rgb(1 5 12 / 81%), 2px 3px 0px 0px rgba(0, 0, 0, 0.4);
         transform: perspective(1000px) rotateX(4deg);
       }
+
       #ranksong:after {
         position: absolute;
         content: "";
@@ -397,6 +383,7 @@
         overflow: scroll;
         height:55em;
       }
+
       .songcontent::-webkit-scrollbar{
         width: 0.5em;
         height: 0;
@@ -469,7 +456,7 @@
           grid-template-rows: repeat(5, 1fr);
           height: 69em;
         }
-        }
+      }
       /*小於1024PX*/
       @media (max-width : 800px) {
         #storepackage {
@@ -514,27 +501,17 @@
           grid-template-rows: repeat(5, 1fr);
           height: 64.5em;
         }
+
         .picturebag img {
-        height: 9em;
-      }
-        
+          height: 9em;
+        }
       }
 
       /*小於1024PX END*/
     </style>
 
-
-
-
     <script>
       function getProduct(pId) {
-    	  
-        //location.href='ProductDescription.jsp?productId='+pId;
-        //Fancybox4
-        //		$.ajax({
-        //			url:'ProductDescriptionajax.jsp?productId='+pId,
-        //			method:'GET'
-        //				}).done(getProductdoneHandler);
         var xhr = $.ajax({
           url: 'ProductDescriptionajax.jsp?productId=' + pId,
           method: 'GET'
@@ -549,15 +526,6 @@
 //       }
 
       function getProductDoneHandler(data, textStatus, jqXHR) {
-        //Fancybox4
-        // 		alert(data);
-        //		$("#pfancybox").html(data);
-        //		$("#pfancybox").css('height','fit-content');
-        //		Fancybox.show([{
-        //			src:$("#pfancybox").html(), 
-        //			type: "html"
-        //			}
-        //		]);
         $("#pfancybox").html(data);
         $("#pfancybox").css('height', 'fit-content');
         $.fancybox.open({
