@@ -219,7 +219,6 @@
           hsla(0, 0%, 100%, 0) 100%
         );
       }
-
       #ranksinger ul {
         height: 100%;
         counter-reset: section;
@@ -230,12 +229,10 @@
         justify-content: center;
         counter-reset: section;
       }
-
       #ranksinger h2 {
         margin: 0;
         color: #d6d6d6;
       }
-
       #ranksinger li:before {
         counter-increment: section;
         content: counter(section);
@@ -249,7 +246,6 @@
         border-radius: 3px;
         font-size: 0.8em;
       }
-
       #ranksinger li {
         width: 100%;
         border-bottom: 1px solid #FFF;
@@ -259,25 +255,20 @@
         color: #FFF;
         font-size: 1em;
       }
-
       /*前三名顏色*/
       #ranksinger li:nth-child(2):before {
         background: #FAFF72;
       }
-
       #ranksinger li:nth-child(3):before {
         background: #E9E7EF;
       }
-
       #ranksinger li:nth-child(4):before {
         background: #F2BE45;
       }
-
       /*前三名顏色 END*/
       #ranksinger li:nth-child(11):before {
         margin-right: 0.5em;
       }
-
       /*歌手排行 END*/
 
       /*歌曲排行 - 玻璃質感*/
@@ -289,7 +280,6 @@
         box-shadow: inset 2px 3px 0px 0px rgb(1 5 12 / 81%), 2px 3px 0px 0px rgba(0, 0, 0, 0.4);
         transform: perspective(1000px) rotateX(4deg);
       }
-
       #ranksong:after {
         position: absolute;
         content: "";
@@ -306,7 +296,6 @@
           hsla(0, 0%, 100%, 0) 100%
         );
       }
-
       #ranksong ul {
         height: 100%;
         counter-reset: section;
@@ -317,12 +306,10 @@
         justify-content: center;
         counter-reset: section;
       }
-
       #ranksong h2 {
         margin: 0;
         color: #d6d6d6;
       }
-
       #ranksong li:before {
         counter-increment: section;
         content: counter(section);
@@ -336,7 +323,6 @@
         border-radius: 3px;
         font-size: 0.8em;
       }
-
       #ranksong li {
         width: 100%;
         border-bottom: 1px solid #FFF;
@@ -346,20 +332,16 @@
         color: #FFF;
         font-size: 1em;
       }
-
       /*前三名顏色*/
       #ranksong li:nth-child(2):before {
         background: #FAFF72;
       }
-
       #ranksong li:nth-child(3):before {
         background: #E9E7EF;
       }
-
       #ranksong li:nth-child(4):before {
         background: #F2BE45;
       }
-
       /*前三名顏色 END*/
       #ranksong li:nth-child(11):before {
         margin-right: 0.5em;
@@ -387,17 +369,17 @@
       .songcontent::-webkit-scrollbar{
         width: 0.5em;
         height: 0;
-        }
-        /*垂直滾動條和水平滾動條时交匯的部分 與 滾動條軌道*/
-        .songcontent::-webkit-scrollbar-corner,
-        .songcontent::-webkit-scrollbar-track{
+      }
+      /*垂直滾動條和水平滾動條时交匯的部分 與 滾動條軌道*/
+      .songcontent::-webkit-scrollbar-corner,
+      .songcontent::-webkit-scrollbar-track{
         display: none;
-        }
-        /*滾動條 滑條*/
-        .songcontent::-webkit-scrollbar-thumb{
+      }
+      /*滾動條 滑條*/
+      .songcontent::-webkit-scrollbar-thumb{
         border-radius: 1em;
         background-color:rgba(112, 112, 112,0.5);
-        }
+      }
 
       .picturebag {
         width: 100%;
@@ -431,12 +413,9 @@
         height: 1.5em;
         width: 15vw;
         max-width: 100%;
-        white-space: nowrap;
-        /*固定一行*/
-        overflow: hidden;
-        /*過長隱藏*/
-        text-overflow: ellipsis;
-        /*過長變...*/
+        white-space: nowrap;/*固定一行*/
+        overflow: hidden;/*過長隱藏*/
+        text-overflow: ellipsis;/*過長變...*/
       }
       
       /*商品表 END*/
@@ -511,13 +490,14 @@
     </style>
 
     <script>
+//    歌曲購買頁面
       function getProduct(pId) {
         var xhr = $.ajax({
           url: 'ProductDescriptionajax.jsp?productId=' + pId,
           method: 'GET'
         }).done(getProductDoneHandler);
       }
-
+//    周邊購買頁面
 //       function getProduct1(pId) {
 //         var xhr = $.ajax({
 //           url: 'ProductDescriptionajax1.jsp?productId=' + pId,

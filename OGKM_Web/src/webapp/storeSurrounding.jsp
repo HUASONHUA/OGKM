@@ -49,31 +49,29 @@
     } else {
     list = ps.getSelectProductsByCategory("Surrounding");//100筆改成查最新上架
     }
-    %>
+  %>
 
     <div id="storepackage">
       <div class="songcontent">
-        <% if (list !=null && list.size()> 0) {
-
+        <%
+          if (list !=null && list.size()> 0) {
           for (int i = 0; i < list.size(); i++) { 
-        	  Product p=list.get(i); %>
-
+        	  Product p=list.get(i);
+        %>
             <div class="picturebag">
-                <a href="javascript:getProduct1(<%=p.getId()%>)">
-                  <img class="productimg" src="<%=p.getPhotoUrl()%>" onerror='getMPERRImg(this)'>
-                </a>
-                <a href="ProductDescriptionmain1.jsp?productId=<%=p.getId()%>">
-                  <div class="pictureword">
-                    <div><%=p.getName()%></div>
-                    <div><%=p.getSinger()%></div>
-                  </div>
-                </a>
+              <a href="javascript:getProduct1(<%=p.getId()%>)">
+                <img class="productimg" src="<%=p.getPhotoUrl()%>" onerror='getMPERRImg(this)'>
+              </a>
+              <a href="ProductDescriptionmain1.jsp?productId=<%=p.getId()%>">
+                <div class="pictureword">
+                  <div><%=p.getName()%></div>
+                  <div><%=p.getSinger()%></div>
+                </div>
+              </a>
             </div>
-            <%}%>
-
-        <%} else {%>
+        <% } } else { %>
           <p>查無產品</p>
-        <%}%>
+        <% } %>
       </div>
     </div>
     <div id="pfancybox"></div>
@@ -225,25 +223,8 @@
     </style>
 
     <script>
-//       function getProduct(pId) {
-        //Fancybox4
-        //		location.href='ProductDescription.jsp?productId='+pId;
-        //		$.ajax({
-        //			url:'ProductDescriptionajax.jsp?productId='+pId,
-        //			method:'GET'
-        //				}).done(getProductdoneHandler);
-//         var xhr = $.ajax({
-//           url: 'ProductDescriptionajax.jsp?productId=' + pId,
-//           method: 'GET'
-//         }).done(getProductDoneHandler);
-//       }
-
+    //周邊購買頁面
       function getProduct1(pId) {
-        //		location.href='ProductDescription1.jsp?productId='+pId;
-        //		$.ajax({
-        //			url:'ProductDescriptionajax1.jsp?productId='+pId,
-        //					method:'GET'
-        //				}).done(getProductdoneHandler);
         var xhr = $.ajax({
           url: 'ProductDescriptionajax1.jsp?productId=' + pId,
           method: 'GET'
@@ -251,15 +232,6 @@
       }
 
       function getProductDoneHandler(data, textStatus, jqXHR) {
-        //Fancybox4
-        // 		alert(data);
-        //		$("#pfancybox").html(data);
-        //		$("#pfancybox").css('height','fit-content');
-        //		Fancybox.show([{
-        //			src:$("#pfancybox").html(), 
-        //			type: "html"
-        //			}
-        //		]);
         $("#pfancybox").html(data);
         $("#pfancybox").css('height', 'fit-content');
         $.fancybox.open({
