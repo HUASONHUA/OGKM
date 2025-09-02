@@ -132,12 +132,12 @@
             <img src="<%=p.getPhotoUrl()%>">
             <div class="ProductDescription">
               <div id="playAudioname">
-               <a href="<%=request.getContextPath()%>/store.jsp?keyword=<%=p.getName()%>">
+               <a href="<%=request.getContextPath()%>/store.jsp?page=1&keyword=<%=p.getName()%>">
                <%=p.getName()%>
                </a>
               </div>
               <div>
-                <a href="<%=request.getContextPath()%>/store.jsp?keyword=<%=p.getSinger()%>">
+                <a href="<%=request.getContextPath()%>/store.jsp?page=1&keyword=<%=p.getSinger()%>">
                 <%=p.getSinger()%>
                 </a>
               </div>
@@ -213,8 +213,12 @@
              list=psSRG.getselectProductsBySingerRelated(p.getSinger(),productId);
              if (list !=null && list.size()> 0) {	 
           %>
-            <div id="RelatedmusicA"><a href="<%=request.getContextPath()%>/store.jsp?keyword=<%=p.getSinger()%>"><%=p.getSinger()%>相關音樂more</a></div>  
-             <%  for (int i = 0; i < list.size(); i++) { 
+            <div id="RelatedmusicA">
+              <a href="<%=request.getContextPath()%>/store.jsp?page=1&keyword=<%=p.getSinger()%>">
+                <%=p.getSinger()%>相關音樂more
+              </a>
+            </div>
+            <%  for (int i = 0; i < list.size(); i++) {
         	  Product pSRG=list.get(i); 
         	  %>
         	  
