@@ -28,5 +28,14 @@
       </library>
     </orderEntry>
     <orderEntry type="module" module-name="OGKM_Lib" />
+    <orderEntry type="module-library">
+      <library>
+        <CLASSES>
+          <root url="jar://$MODULE_DIR$/src/webapp/WEB-INF/lib/jakarta.servlet-api-6.1.0.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
   </component>
 </module>
