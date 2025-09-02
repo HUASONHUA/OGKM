@@ -29,11 +29,13 @@
 			<ul class="menu">
 				<form class="searchbag" action="/OGKM/store.jsp" method="GET">
 					<input type="search" name="keyword" placeholder="SEARCH"
-						value="${param.keyword != null ? param.keyword : ''}"> <input type="submit" value="搜尋">
+						value="${param.keyword != null ? param.keyword : ''}">
+					<input type="hidden" name="page" value="1">
+          <input type="submit" value="搜尋">
 				</form>
 				<li><a href="<%=request.getContextPath()%>"><i class="fas fa-home"></i>
 						<p>首頁</p> </a></li>
-				<li><a href="<%=request.getContextPath()%>/store.jsp">
+				<li><a href="<%=request.getContextPath()%>/store.jsp?page=1">
 				<i class="fas fa-archive"></i>
 						<p>商店</p> </a></li>
 				<li><a href="<%=request.getContextPath()%>/register.jsp"><i

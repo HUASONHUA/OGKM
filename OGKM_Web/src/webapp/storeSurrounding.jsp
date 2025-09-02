@@ -24,30 +24,30 @@
 
   <div id="muiscmenu">
     <ul class="muiscmenu">
-      <li><a href="<%=request.getContextPath()%>/store.jsp">全部</a></li>
-<%--       <li><a href="<%=request.getContextPath()%>/store.jsp">NEW</a></li> --%>
-      <li><a href="<%=request.getContextPath()%>/store.jsp?category=JPOP">J-POP</a></li>
-      <li><a href="<%=request.getContextPath()%>/store.jsp?category=ANIME">ANIME</a></li>
-      <li><a href="<%=request.getContextPath()%>/store.jsp?category=VOCALOID">VOCALOID</a></li>
-      <li><a href="<%=request.getContextPath()%>/store.jsp?category=VTuber">VTuber</a></li>
-      <li><a href="<%=request.getContextPath()%>/storeSurrounding.jsp">周邊</a></li>
-<%--       <li><a href="<%=request.getRequestURI()%>?category=Surrounding">周邊</a></li> --%>
+      <li><a href="<%=request.getContextPath()%>/store.jsp?page=1">全部</a></li>
+      <li><a href="<%=request.getContextPath()%>/store.jsp?category=JPOP&page=1">J-POP</a></li>
+      <li><a href="<%=request.getContextPath()%>/store.jsp?category=ANIME&page=1">ANIME</a></li>
+      <li><a href="<%=request.getContextPath()%>/store.jsp?category=VOCALOID&page=1">VOCALOID</a></li>
+      <li><a href="<%=request.getContextPath()%>/store.jsp?category=VTuber&page=1">VTuber</a></li>
+      <li><a href="<%=request.getContextPath()%>/storeSurrounding.jsp?page=1">周邊</a></li>
     </ul>
   </div>
 
   <% //1.取得REQUEST的FORM DATA 
-  String keyword=request.getParameter("keyword"); 
-  //TODO: 加上分類查詢 
-  String category=request.getParameter("category"); 
+  String keyword=request.getParameter("keyword");
+  String category=request.getParameter("category");
+  String pages = request.getParameter("page");
+  //後續加上分類查詢
+
   //2.呼叫商業邏輯 
     ProductService ps=new ProductService(); 
     List<Product> list;
     if (keyword != null && keyword.length() > 0) {
-    list = ps.getSelectProductsByName(keyword);
+    list = ps.getSelectProductsByName(keyword,pages);
     } else if (category != null && category.length() > 0) {
-    list = ps.getSelectProductsByCategory(category);
+    list = ps.getSelectProductsByCategory(category,pages);
     } else {
-    list = ps.getSelectProductsByCategory("Surrounding");//100筆改成查最新上架
+    list = ps.getSelectProductsByCategory("Surrounding",pages);//100筆改成查最新上架
     }
   %>
 

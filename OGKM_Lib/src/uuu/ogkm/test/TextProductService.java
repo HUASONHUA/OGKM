@@ -9,17 +9,18 @@ import uuu.ogkm.service.ProductService;
 
 public class TextProductService {
 
-	public static void main(String[] args) {
-		ProductService ps = new ProductService();
-		try {
-			System.out.println(ps.getAllProducts());
-		} catch (OGKMException e) {
-			Logger.getLogger("測試產品查詢").log(
-					Level.SEVERE, e.getMessage(),e);
-			
-			
-		}
+  public static void main(String[] args) {
+    ProductService ps = new ProductService();
+    try {
+      String page = "1";
+      System.out.println(ps.getAllProducts(page));
+    } catch (OGKMException e) {
+      Logger.getLogger("測試產品查詢").log(
+          Level.SEVERE, e.getMessage(), e);
 
-	}
+
+    }
+
+  }
 
 }

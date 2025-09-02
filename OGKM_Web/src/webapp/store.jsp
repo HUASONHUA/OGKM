@@ -24,25 +24,14 @@
 
   <div id="muiscmenu">
     <ul class="muiscmenu">
-      <li><a href="<%=request.getRequestURI()%>">全部</a></li>
-      <li><a href="<%=request.getRequestURI()%>?NEW">NEW</a></li>
-      <li><a href="<%=request.getRequestURI()%>?category=JPOP">J-POP</a></li>
-      <li><a href="<%=request.getRequestURI()%>?category=ANIME">ANIME</a></li>
-      <li><a href="<%=request.getRequestURI()%>?category=VOCALOID">VOCALOID</a></li>
-      <li><a href="<%=request.getRequestURI()%>?category=VTuber">VTuber</a></li>
-      <li><a href="<%=request.getContextPath()%>/storeSurrounding.jsp">周邊</a></li>
-<%--       <li><a href="<%=request.getRequestURI()%>?category=Surrounding">周邊</a></li> --%>
+      <li><a href="<%=request.getRequestURI()%>?page=1">全部</a></li>
+      <li><a href="<%=request.getRequestURI()%>?category=JPOP&page=1">J-POP</a></li>
+      <li><a href="<%=request.getRequestURI()%>?category=ANIME&page=1">ANIME</a></li>
+      <li><a href="<%=request.getRequestURI()%>?category=VOCALOID&page=1">VOCALOID</a></li>
+      <li><a href="<%=request.getRequestURI()%>?category=VTuber&page=1">VTuber</a></li>
+      <li><a href="<%=request.getContextPath()%>/storeSurrounding.jsp?page=1">周邊</a></li>
     </ul>
   </div>
-
-  <% //1.取得REQUEST的FORM DATA 
-    String keyword=request.getParameter("keyword");
-    String category=request.getParameter("category");
-    String NEW=request.getParameter("NEW");
-    String keywordname=request.getParameter("keywordname");
-    String keywordsinger=request.getParameter("keywordsinger");
-    //後續加上分類查詢
-  %>
 
   <div id="storepackage">
     <div class="rank">
@@ -78,14 +67,32 @@
 
     <div class="songcontent">
       <%
+        //1.取得REQUEST的FORM DATA
+        String keyword = request.getParameter("keyword");
+        String category = request.getParameter("category");
+        String pages = request.getParameter("page");
+        String keywordname = request.getParameter("keywordname");
+        String keywordsinger = request.getParameter("keywordsinger");
+        //後續加上分類查詢
+
         ProductService ps=new ProductService();
+
+        int totalPages ;
+        if (keyword != null && keyword.length() > 0) {
+          totalPages = ps.getKeywordTotalPages(keyword);
+        } else if (category != null && category.length() > 0) {
+          totalPages = ps.getCategoryTotalPages(category);
+        } else {
+          totalPages = ps.getTotalPages();
+        }
+
         List<Product> list;
         if (keyword != null && keyword.length() > 0) {
-          list = ps.getSelectProductsByName(keyword);
+          list = ps.getSelectProductsByName(keyword,pages);
         } else if (category != null && category.length() > 0) {
-          list = ps.getSelectProductsByCategory(category);
+          list = ps.getSelectProductsByCategory(category,pages);
         } else {
-          list = ps.getAllNewProducts();
+          list = ps.getAllNewProducts(pages);
         }
 
         if (list !=null && list.size()> 0) {
@@ -102,12 +109,43 @@
                 <div><%=p.getSinger()%></div>
               </div>
             </a>
+
           </div>
         <% } } else { %>
           <p>查無產品</p>
       <%}%>
+      <div id="page">
+        <span id="firstPageBtn">第</span>
+        <a href="<%= "store.jsp?page=" + 1
+            + (keyword != null ? "&keyword=" + keyword : "")
+            + (category != null ? "&category=" + category : "") %>">
+          <span class="pageBtn"> << </span>
+        </a>
+        <%
+          int currentPage = Integer.parseInt(pages);
+          int displayRange = 4;
+          int startPage = Math.max(1, currentPage - displayRange);
+          int endPage = Math.min(totalPages, currentPage + displayRange);
+
+          for (int i = startPage; i <= endPage; i++) { %>
+            <% if (i == currentPage) { %>
+              <span id="currPageBtn"><%=i%></span>
+            <% } else { %>
+            <a href="<%= "store.jsp?page=" + i
+              + (keyword != null ? "&keyword=" + keyword : "")
+              + (category != null ? "&category=" + category : "") %>">
+              <span class="pageBtn"><%= i %></span>
+            </a>
+        <% } } %>
+        <a href="<%= "store.jsp?page=" + totalPages
+              + (keyword != null ? "&keyword=" + keyword : "")
+              + (category != null ? "&category=" + category : "") %>">
+            <span class="pageBtn"> >> </span>
+        </a>
+        <span>頁</span>
       </div>
     </div>
+  </div>
     <div id="pfancybox"></div>
     <!--商品 END-->
 
@@ -350,8 +388,36 @@
 
       /*排行榜 END*/
 
+      /*頁數*/
+      #page {
+        grid-column: 1 / -1; /* 跨整個grid */
+        position: sticky;
+        text-align: center;
+        z-index: 10;
+      }
+
+      #page a {
+        text-decoration: none;
+        margin-right: 0.5em;
+      }
+      #firstPageBtn,
+      #currPageBtn{
+        margin-right: 0.5em;
+      }
+      .pageBtn{
+        display: inline-block;
+        padding: 0 1em;
+        height: 2em;
+        line-height: 2em;
+        color: #000;
+        background: #FFFFF0;
+        border-radius: 3px;
+        font-size: 0.8em;
+      }
+
       /*商品表*/
       .songcontent {
+        position: relative;
         grid-area: songcontent;
         display: grid;
         grid-template-columns: repeat(5, 1fr);
