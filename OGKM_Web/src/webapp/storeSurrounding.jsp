@@ -43,11 +43,9 @@
     ProductService ps=new ProductService(); 
     List<Product> list;
     if (keyword != null && keyword.length() > 0) {
-    list = ps.getSelectProductsByName(keyword,pages);
-    } else if (category != null && category.length() > 0) {
-    list = ps.getSelectProductsByCategory(category,pages);
+      list = ps.getSelectProductsByName(keyword,pages);
     } else {
-    list = ps.getSelectProductsByCategory("Surrounding",pages);//100筆改成查最新上架
+      list = ps.getSelectProductsByCategory("Surrounding",pages);
     }
   %>
 
