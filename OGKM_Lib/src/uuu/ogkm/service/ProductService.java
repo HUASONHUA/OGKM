@@ -12,6 +12,7 @@ import uuu.ogkm.exception.OGKMException;
 
 public class ProductService {
   public static final int PAGE_SIZE = 20;
+  public static final int MERCH_PAGE_SIZE = 9;
   private ProductsDAO dao = new ProductsDAO();
 
   public int getTotalPages() throws OGKMException {
@@ -26,7 +27,8 @@ public class ProductService {
 
   public int getCategoryTotalPages(String category) throws OGKMException {
     int totalRecords = dao.getTotalProductsByCategory(category);
-    return (int) Math.ceil((double) totalRecords / PAGE_SIZE);
+    int pagesize = "Surrounding".equals(category) ? MERCH_PAGE_SIZE : PAGE_SIZE;
+    return (int) Math.ceil((double) totalRecords / pagesize);
   }
 
   public List<Product> getAllProducts(String page) throws OGKMException {
@@ -42,7 +44,8 @@ public class ProductService {
   }
 
   public List<Product> getSelectProductsByCategory(String category, String page) throws OGKMException {
-    return dao.SelectProductsByCategory(category, page, PAGE_SIZE);
+    int pagesize = "Surrounding".equals(category) ? MERCH_PAGE_SIZE : PAGE_SIZE;
+    return dao.SelectProductsByCategory(category, page, pagesize);
   }
 
   public Product getSelectProductsById(String id) throws OGKMException {
