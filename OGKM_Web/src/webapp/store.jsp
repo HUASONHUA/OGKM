@@ -140,20 +140,30 @@
           int startPage = Math.max(1, currentPage - displayRange);
           int endPage = Math.min(totalPages, currentPage + displayRange);
 
-          for (int i = startPage; i <= endPage; i++) { %>
-            <% if (i == currentPage) { %>
-              <span id="currPageBtn"><%=i%></span>
-            <% } else { %>
-            <a href="<%= "store.jsp?page=" + i
-              + (keyword != null ? "&keyword=" + keyword : "")
-              + (category != null ? "&category=" + category : "") %>">
-              <span class="pageBtn"><%= i %></span>
-            </a>
-        <% } } %>
+          // 左邊 ...
+          if (startPage > 1) {
+        %>
+          <span class="pageEllipsis">...</span>
+        <% }
+           for (int i = startPage; i <= endPage; i++) {
+             if (i == currentPage) { %>
+               <span id="currPageBtn"><%=i%></span>
+        <% } else { %>
+             <a href="<%= "store.jsp?page=" + i
+               + (keyword != null ? "&keyword=" + keyword : "")
+               + (category != null ? "&category=" + category : "") %>">
+               <span class="pageBtn"><%= i %></span>
+             </a>
+        <% } }
+          // 右邊 ...
+          if (endPage < totalPages) {
+        %>
+          <span class="pageEllipsis">...</span>
+        <% } %>
         <a href="<%= "store.jsp?page=" + totalPages
               + (keyword != null ? "&keyword=" + keyword : "")
               + (category != null ? "&category=" + category : "") %>">
-            <span class="pageBtn"> >> </span>
+          <span class="pageBtn"> >> </span>
         </a>
         <span>頁</span>
       </div>
@@ -413,10 +423,18 @@
         text-decoration: none;
         margin-right: 0.5em;
       }
+
       #firstPageBtn,
-      #currPageBtn{
+      #currPageBtn,
+      .pageEllipsis{
         margin-right: 0.5em;
       }
+
+      .pageEllipsis{
+        color: white;
+        font-size: 20px;
+      }
+
       .pageBtn{
         display: inline-block;
         padding: 0 1em;
