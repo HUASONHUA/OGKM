@@ -29,10 +29,22 @@
       <li><a href="<%=request.getRequestURI()%>?category=ANIME&page=1">ANIME</a></li>
       <li><a href="<%=request.getRequestURI()%>?category=VOCALOID&page=1">VOCALOID</a></li>
       <li><a href="<%=request.getRequestURI()%>?category=VTuber&page=1">VTuber</a></li>
-      <li><a href="<%=request.getContextPath()%>/storeSurrounding.jsp?page=1">周邊</a></li>
+      <!-- <li><a href="<%=request.getContextPath()%>/storeSurrounding.jsp?page=1">周邊</a></li> -->
+      <li><a href="<%=request.getRequestURI()%>?category=Surrounding&page=1">周邊</a></li>
     </ul>
   </div>
 
+  <%
+    //1.取得REQUEST的FORM DATA
+    String keyword = request.getParameter("keyword");
+    String category = request.getParameter("category");
+    String pages = request.getParameter("page");
+    String keywordname = request.getParameter("keywordname");
+    String keywordsinger = request.getParameter("keywordsinger");
+    //後續加上分類查詢
+  %>
+
+  <% if (!"Surrounding".equals(category)) { %>
   <div id="storepackage">
     <div class="rank">
       <div id="ranksinger">
@@ -54,9 +66,9 @@
           <h2>歌曲排行</h2>
            <% ProductService psSongTop10=new ProductService();
              List<Product> listSongTop10;
-             listSongTop10 = psSongTop10.getselectProductsBySingerTop10();
+             listSongTop10 = psSongTop10.getselectProductsBySongTop10();
              if (listSongTop10 != null && listSongTop10.size() > 0) {
-               for(int i=0;i<listSingerTop10.size();i++) {
+               for(int i=0;i<listSongTop10.size();i++) {
             	 Product pSongTop10=listSongTop10.get(i);
            %>
            <li><a><%=pSongTop10.getName() != null ? pSongTop10.getName() : "" %></a></li>
@@ -64,17 +76,10 @@
         </ul>
       </div>
     </div>
+    <% } %>
 
     <div class="songcontent">
       <%
-        //1.取得REQUEST的FORM DATA
-        String keyword = request.getParameter("keyword");
-        String category = request.getParameter("category");
-        String pages = request.getParameter("page");
-        String keywordname = request.getParameter("keywordname");
-        String keywordsinger = request.getParameter("keywordsinger");
-        //後續加上分類查詢
-
         ProductService ps=new ProductService();
 
         int totalPages ;
@@ -100,10 +105,15 @@
             Product p=list.get(i);
       %>
           <div class="picturebag">
-            <a href="javascript:getProduct(<%=p.getId()%>)">
+
+            <a href="javascript:getProduct(<%=p.getId()%>,'<%=p.getCategory()%>')">
               <img class="productimg" src="<%=p.getPhotoUrl()%>" onerror='getMPERRImg(this)'>
             </a>
+            <% if ( !p.getCategory().equals("Surrounding")) { %>
             <a href="ProductDescriptionmain.jsp?productId=<%=p.getId()%>">
+            <% } else { %>
+            <a href="ProductDescriptionmain1.jsp?productId=<%=p.getId()%>">
+            <% } %>
               <div class="pictureword">
                 <div><%=p.getName()%></div>
                 <div><%=p.getSinger()%></div>
@@ -556,20 +566,22 @@
     </style>
 
     <script>
-//    歌曲購買頁面
-      function getProduct(pId) {
-        var xhr = $.ajax({
-          url: 'ProductDescriptionajax.jsp?productId=' + pId,
+
+      function getProduct(pId,category) {
+        if (category != "Surrounding"){
+        //    歌曲購買頁面
+          var xhr = $.ajax({
+            url: 'ProductDescriptionajax.jsp?productId=' + pId,
+            method: 'GET'
+          }).done(getProductDoneHandler);
+        } else {
+        //    周邊購買頁面
+          var xhr = $.ajax({
+          url: 'ProductDescriptionajax1.jsp?productId=' + pId,
           method: 'GET'
-        }).done(getProductDoneHandler);
+          }).done(getProductDoneHandler);
+        }
       }
-//    周邊購買頁面
-//       function getProduct1(pId) {
-//         var xhr = $.ajax({
-//           url: 'ProductDescriptionajax1.jsp?productId=' + pId,
-//           method: 'GET'
-//         }).done(getProductDoneHandler);
-//       }
 
       function getProductDoneHandler(data, textStatus, jqXHR) {
         $("#pfancybox").html(data);
