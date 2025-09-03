@@ -29,7 +29,6 @@
       <li><a href="<%=request.getRequestURI()%>?category=ANIME&page=1">ANIME</a></li>
       <li><a href="<%=request.getRequestURI()%>?category=VOCALOID&page=1">VOCALOID</a></li>
       <li><a href="<%=request.getRequestURI()%>?category=VTuber&page=1">VTuber</a></li>
-      <!-- <li><a href="<%=request.getContextPath()%>/storeSurrounding.jsp?page=1">周邊</a></li> -->
       <li><a href="<%=request.getRequestURI()%>?category=Surrounding&page=1">周邊</a></li>
     </ul>
   </div>
@@ -78,7 +77,11 @@
     </div>
     <% } %>
 
+    <% if (!"Surrounding".equals(category)) { %>
     <div class="songcontent">
+    <% } else { %>
+    <div class="merchcontent">
+    <% } %>
       <%
         ProductService ps=new ProductService();
 
@@ -442,34 +445,68 @@
         height:55em;
       }
 
-      .songcontent::-webkit-scrollbar{
+      .merchcontent {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        grid-template-rows: repeat(3, 1fr);
+        grid-gap: 1em;
+        padding: 1em 1em;
+        justify-items: center;
+        align-items: center;
+        background: linear-gradient(45deg, #c0bfbf 30%, #9b9b9b 70%);
+        background: #e6e6e6;
+      }
+
+      .songcontent::-webkit-scrollbar,
+      .merchcontent::-webkit-scrollbar{
         width: 0.5em;
         height: 0;
       }
+
       /*垂直滾動條和水平滾動條时交匯的部分 與 滾動條軌道*/
       .songcontent::-webkit-scrollbar-corner,
-      .songcontent::-webkit-scrollbar-track{
+      .songcontent::-webkit-scrollbar-track,
+      .merchcontent::-webkit-scrollbar-corner,
+      .merchcontent::-webkit-scrollbar-track{
         display: none;
       }
       /*滾動條 滑條*/
-      .songcontent::-webkit-scrollbar-thumb{
+      .songcontent::-webkit-scrollbar-thumb,
+      .merchcontent::-webkit-scrollbar-thumb{
         border-radius: 1em;
         background-color:rgba(112, 112, 112,0.5);
       }
 
-      .picturebag {
+      .songcontent .picturebag {
         width: 100%;
+      }
+
+      .merchcontent .picturebag {
+        width: 100%;
+        border-radius:10PX;
+        background: linear-gradient(45deg, #c0bfbf 30%, #9b9b9b 70%);
+        box-shadow: rgba(0, 0, 0, 0.2) 0px 12px 28px 0px, rgba(0, 0, 0, 0.1) 0px 2px 4px 0px, rgba(255, 255, 255, 0.05) 0px 0px 0px 1px inset;
       }
 
       .picturebag a {
         text-decoration: none;
       }
 
-      .picturebag img {
+      .songcontent .picturebag img {
         transition: transform 1s ease;
         width: 100%;
         height: 10em;
         margin: auto;
+        transform: scale(0.95, 0.95);
+        transition: box-shadow 500ms;
+      }
+
+      .merchcontent .picturebag img {
+        transition: transform 1s ease;
+        width: 100%;
+        height: 20em;
+        margin: auto;
+        border-radius:10PX;
         transform: scale(0.95, 0.95);
         transition: box-shadow 500ms;
       }
