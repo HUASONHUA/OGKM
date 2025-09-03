@@ -70,7 +70,7 @@
             <h2 class="cardtitle">J-POP</h2>
             <p class="cardcopy">日本流行音樂（Japanese Popular Music，J-POP）是指一段時期內廣泛被大眾所接受和喜歡的日本音樂</p>
             <button class="cardbtn"
-              onclick="location.href='<%=request.getContextPath()%>/store.jsp?category=JPOP'">進入</button>
+              onclick="location.href='<%=request.getContextPath()%>/store.jsp?category=JPOP&page=1'">進入</button>
           </div>
         </div>
         <div class="card">
@@ -78,14 +78,14 @@
             <h2 class="cardtitle">VOCALOID</h2>
             <p class="cardcopy">VOCALOID(英文簡稱：VOCALO)是日本YAMAHA開發的電子歌聲合成軟體，輸入音調和歌詞，能合成貼近人類聲音的歌聲</p>
             <button class="cardbtn"
-              onclick="location.href='<%=request.getContextPath()%>/store.jsp?category=VOCALOID'">進入</button>
+              onclick="location.href='<%=request.getContextPath()%>/store.jsp?category=VOCALOID&page=1'">進入</button>
           </div>
         </div>
         <div class="card">
           <div class="cardcontent">
             <h2 class="cardtitle">ANIME</h2>
             <p class="cardcopy">動畫歌曲(animesong,稱為アニソン)是動畫作品的主題曲、片頭曲(OP)、片尾曲(ED)、插入曲(IN)、角色歌曲的總稱</p>
-            <button class="cardbtn"onclick="location.href='<%=request.getContextPath()%>/store.jsp?category=ANIME'">進入</button>
+            <button class="cardbtn"onclick="location.href='<%=request.getContextPath()%>/store.jsp?category=ANIME&page=1'">進入</button>
           </div>
         </div>
         <div class="card">
@@ -94,7 +94,7 @@
             <p class="cardcopy">虛擬YouTuber
               (VirtualYouTuber ,Vtuber),
               Vtuber是虛擬人物形象在網路影片平台上傳影片或直播的創作者</p>
-            <button class="cardbtn"onclick="location.href='<%=request.getContextPath()%>/store.jsp?category=VTuber'">進入</button>
+            <button class="cardbtn"onclick="location.href='<%=request.getContextPath()%>/store.jsp?category=VTuber&page=1'">進入</button>
           </div>
         </div>
       </div>
