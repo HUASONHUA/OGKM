@@ -539,11 +539,30 @@ class ProductsDAO {
 
   //排行
   private static final String SelectProductsBySongTop10 =
-      "SELECT id,name,singer,Sales,"
-          + "curdate() - INTERVAL 14 day "
-          + " FROM products"
-          + " WHERE category <> 'merch'"
-          + " order by Sales Desc limit 10 ";
+      "WITH top_sales AS ("
+          + " SELECT p.id AS product_id, p.name, p.singer, SUM(oi.quantity) AS Sales"
+          + " FROM products p"
+          + " JOIN order_items oi ON oi.product_id = p.id"
+          + " JOIN orders o ON o.id = oi.order_id"
+          + " WHERE p.category <> 'merch'"
+          + " AND o.created_date >= CURDATE() - INTERVAL 14 DAY"
+          + " GROUP BY p.id, p.name, p.singer"
+          + " ORDER BY Sales DESC"
+          + " LIMIT 10),"
+          + " latest_products AS ("
+          + " SELECT p.id AS product_id, p.name, p.singer, 0 AS Sales"
+          + " FROM products p"
+          + " WHERE p.category <> 'merch'"
+          + " AND p.id NOT IN (SELECT product_id FROM top_sales)"
+          + " ORDER BY p.id DESC"
+          + ")"
+          + " SELECT * FROM ("
+          + " SELECT * FROM top_sales"
+          + " UNION ALL"
+          + " SELECT * FROM latest_products"
+          + " ) AS combined"
+          + " ORDER BY Sales DESC, product_id DESC"
+          + " LIMIT 10;";
 
   List<Product> selectProductsBySongTop10() throws OGKMException {
     List<Product> list = new ArrayList<>();
@@ -559,7 +578,7 @@ class ProductsDAO {
         while (rs.next()) {
           Product p = new Product();
 
-          p.setId(rs.getInt("id"));
+          p.setId(rs.getInt("product_id"));
           p.setName(rs.getString("name"));
           p.setSinger(rs.getString("singer"));
           p.setSales(rs.getInt("Sales"));

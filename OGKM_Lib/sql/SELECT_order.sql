@@ -79,3 +79,44 @@ FROM products JOIN order_items ON order_items.product_id=products.id
 JOIN orders ON orders.id=order_items.order_id
 Where (member_id='A123456789')AND products.category<>'merch'
 GROUP BY products.id;
+
+/*歌曲排名 JAVA 可讀*/
+WITH top_sales AS (
+    SELECT
+        p.id AS product_id,
+        p.name,
+        p.singer,
+        SUM(oi.quantity) AS Sales
+    FROM products p
+    JOIN order_items oi ON oi.product_id = p.id
+    JOIN orders o ON o.id = oi.order_id
+    WHERE p.category <> 'merch'
+      AND o.created_date >= CURDATE() - INTERVAL 14 DAY
+    GROUP BY p.id, p.name, p.singer
+),
+latest_products AS (
+    SELECT
+        p.id AS product_id,
+        p.name,
+        p.singer,
+        0 AS Sales
+    FROM products p
+    WHERE p.category <> 'merch'
+      AND p.id NOT IN (SELECT product_id FROM top_sales)
+)
+SELECT *
+FROM (
+    SELECT * FROM top_sales
+    ORDER BY Sales DESC
+    LIMIT 10
+) AS top
+UNION ALL
+SELECT *
+FROM (
+    SELECT * FROM latest_products
+    ORDER BY product_id DESC
+    LIMIT 10
+) AS latest
+ORDER BY Sales DESC, product_id DESC
+LIMIT 10;
+
