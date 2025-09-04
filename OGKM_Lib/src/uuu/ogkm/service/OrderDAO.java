@@ -20,10 +20,10 @@ import uuu.ogkm.exception.OGKMStockShorttageException;
 public class OrderDAO {
 	private static final String UPDATE_PRODUCTS_MUSIC_SALES=
 			"UPDATE products SET Sales=Sales+1"
-			+" WHERE id = ? AND category <>'Surrounding'";//ID
+			+" WHERE id = ? AND category <>'merch'";//ID
 	private static final String UPDATE_PRODUCTS_STOCK=
 			"UPDATE products SET stock=stock-?"
-			+" WHERE stock>=? AND id = ? AND category ='Surrounding'";//數，數，ID
+			+" WHERE stock>=? AND id = ? AND category ='merch'";//數，數，ID
 	private static final String UPDATE_PRODUCT_SURROUNDING_STOCK=
 			"UPDATE product_surrounding SET stock=stock-? "
 			+" WHERE stock>=?  AND product_id = ? AND typecolorname=?";//數，數，ID，顏色
@@ -81,7 +81,7 @@ public class OrderDAO {
 						pstmtupdate.setInt(3, p.getId());
 						pstmtupdate.setString(4, typeColor.getTypecolorname());
 					}else {
-						if(p.getCategory().equals("Surrounding")) {
+						if(p.getCategory().equals("merch")) {
 						pstmtupdate = updateproduct_Stock;
 						pstmtupdate.setInt(1, qty);
 						pstmtupdate.setInt(2, qty);

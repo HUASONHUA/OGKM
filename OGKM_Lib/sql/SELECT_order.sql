@@ -62,14 +62,14 @@ GROUP BY ordinal;
 SELECT  products.id,orders.id, member_id, category,name,photoUrl
 FROM orders JOIN order_items ON orders.id=order_items.order_id
 JOIN products ON order_items.product_id=products.id
-Where (member_id='F123326512')AND products.category<>'Surrounding';
+Where (member_id='F123326512')AND products.category<>'merch';
 
 
 /*以購買*/
 SELECT  products.id,orders.id, member_id, category,name,photoUrl,musicUrl,
 count(distinct products.id)FROM ogk.products JOIN ogk.order_items ON ogk.order_items.product_id=ogk.products.id
 JOIN ogk.orders ON ogk.orders.id=ogk.order_items.order_id
-Where (member_id='F123326512')AND products.category<>'Surrounding'
+Where (member_id='F123326512')AND products.category<>'merch'
 GROUP BY products.id;
 
 /*以購買*/
@@ -77,5 +77,5 @@ SELECT products.id,orders.id, member_id, category,name,photoUrl,musicUrl,
 group_concat(distinct products.id)
 FROM products JOIN order_items ON order_items.product_id=products.id
 JOIN orders ON orders.id=order_items.order_id
-Where (member_id='A123456789')AND products.category<>'Surrounding'
+Where (member_id='A123456789')AND products.category<>'merch'
 GROUP BY products.id;

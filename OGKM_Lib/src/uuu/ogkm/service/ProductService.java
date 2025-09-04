@@ -27,7 +27,7 @@ public class ProductService {
 
   public int getCategoryTotalPages(String category) throws OGKMException {
     int totalRecords = dao.getTotalProductsByCategory(category);
-    int pagesize = "Surrounding".equals(category) ? MERCH_PAGE_SIZE : PAGE_SIZE;
+    int pagesize = "merch".equals(category) ? MERCH_PAGE_SIZE : PAGE_SIZE;
     return (int) Math.ceil((double) totalRecords / pagesize);
   }
 
@@ -44,7 +44,7 @@ public class ProductService {
   }
 
   public List<Product> getSelectProductsByCategory(String category, String page) throws OGKMException {
-    int pagesize = "Surrounding".equals(category) ? MERCH_PAGE_SIZE : PAGE_SIZE;
+    int pagesize = "merch".equals(category) ? MERCH_PAGE_SIZE : PAGE_SIZE;
     return dao.SelectProductsByCategory(category, page, pagesize);
   }
 

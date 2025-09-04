@@ -61,7 +61,7 @@
               </td>
               <td class="pnamewidth"><%=p.getName() %></td>
               <td class="ptypecolorwidth"><%=typecolor!=null?typecolor.getTypecolorname():"--" %> </td>
-<%--               <%if(!(p.getCategory().equals("Surrounding"))){%> --%>
+<%--               <%if(!(p.getCategory().equals("merch"))){%> --%>
 <!--               <td>--</td> -->
 <%--               <%}else{ %> --%>
               <td><%=p.hasSize()!=false?size:"--"%></td>
@@ -69,7 +69,7 @@
               <td><%=p instanceof Outlet?((Outlet)p).getDiscountString():"--"%></td>
               <td class="pUnitPricewidth"><%= p.getUnitPrice()*qty%></td>
 
-              <%if(!(p.getCategory().equals("Surrounding"))){%>
+              <%if(!(p.getCategory().equals("merch"))){%>
               <td><input type='number' name='quantity<%=item.hashCode()%>' 
               value='<%=qty%>'min=<%=stock>0?1:0%> max='<%=stock%>'></td>
               <%}else{ %>

@@ -4,8 +4,8 @@
 SELECT * FROM ogk.product_real_time_stock
 	WHERE id IN (25, 11,10, 1, 14); 
 
-UPDATE products SET Sales=Sales+1 WHERE category <>'Surrounding' AND id = 1;
-UPDATE products SET stock=stock-1 WHERE category ='Surrounding' AND stock>=stock AND id = 1;
+UPDATE products SET Sales=Sales+1 WHERE category <>'merch' AND id = 1;
+UPDATE products SET stock=stock-1 WHERE category ='merch' AND stock>=stock AND id = 1;
 
 UPDATE product_surrounding SET stock=stock-3 WHERE stock>=stock  AND product_id = 11 AND typecolorname='Ayase布偶' ;
 

@@ -29,7 +29,7 @@
       <li><a href="<%=request.getRequestURI()%>?category=ANIME&page=1">ANIME</a></li>
       <li><a href="<%=request.getRequestURI()%>?category=VOCALOID&page=1">VOCALOID</a></li>
       <li><a href="<%=request.getRequestURI()%>?category=VTuber&page=1">VTuber</a></li>
-      <li><a href="<%=request.getRequestURI()%>?category=Surrounding&page=1">周邊</a></li>
+      <li><a href="<%=request.getRequestURI()%>?category=merch&page=1">周邊</a></li>
     </ul>
   </div>
 
@@ -43,7 +43,7 @@
     //後續加上分類查詢
   %>
 
-  <% if (!"Surrounding".equals(category)) { %>
+  <% if (!"merch".equals(category)) { %>
   <div id="storepackage">
     <div class="rank">
       <div id="ranksinger">
@@ -77,7 +77,7 @@
     </div>
     <% } %>
 
-    <% if (!"Surrounding".equals(category)) { %>
+    <% if (!"merch".equals(category)) { %>
     <div class="songcontent">
     <% } else { %>
     <div class="merchcontent">
@@ -112,7 +112,7 @@
             <a href="javascript:getProduct(<%=p.getId()%>,'<%=p.getCategory()%>')">
               <img class="productimg" src="<%=p.getPhotoUrl()%>" onerror='getMPERRImg(this)'>
             </a>
-            <% if ( !p.getCategory().equals("Surrounding")) { %>
+            <% if ( !p.getCategory().equals("merch")) { %>
             <a href="ProductDescriptionmain.jsp?productId=<%=p.getId()%>">
             <% } else { %>
             <a href="ProductDescriptionmain1.jsp?productId=<%=p.getId()%>">
@@ -623,7 +623,7 @@
     <script>
 
       function getProduct(pId,category) {
-        if (category != "Surrounding"){
+        if (category != "merch"){
         //    歌曲購買頁面
           var xhr = $.ajax({
             url: 'ProductDescriptionajax.jsp?productId=' + pId,

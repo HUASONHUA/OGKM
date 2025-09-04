@@ -21,7 +21,7 @@ import uuu.ogkm.exception.OGKMException;
 class ProductsDAO {
   //總數
   public int countAllProducts() throws OGKMException {
-    String sql = "SELECT COUNT(*) AS total FROM products WHERE category <> 'surrounding'";
+    String sql = "SELECT COUNT(*) AS total FROM products WHERE category <> 'merch'";
     int total = 0;
     try (Connection connection = RDBConnection.getConnection();
          PreparedStatement pstmt = connection.prepareStatement(sql);
@@ -38,7 +38,7 @@ class ProductsDAO {
 
   public int getTotalProductsByName(String keyword) throws OGKMException {
     String sql = "SELECT COUNT(*) AS total FROM products WHERE (name LIKE ? OR singer LIKE ?)"
-        + " AND category <> 'surrounding'";
+        + " AND category <> 'merch'";
     String key = "%" + keyword + "%";
     int total = 0;
     try (Connection connection = RDBConnection.getConnection();
@@ -81,7 +81,7 @@ class ProductsDAO {
       "SELECT id, name, singer,category, unitPrice,"
           + "photoUrl, description, shelfDate, discount,stock"
           + " FROM products"
-          + " WHERE category <>'surrounding'";
+          + " WHERE category <>'merch'";
 
   List<Product> selectAllProducts(String page, int pageSize) throws OGKMException {
     List<Product> list = new ArrayList<>();
@@ -174,7 +174,7 @@ class ProductsDAO {
       "SELECT id, name, singer,category, unitPrice,"
           + " photoUrl, description, shelfDate, discount,stock"
           + " FROM products WHERE  (name LIKE ? OR singer LIKE ? )"
-          + " AND category <>'surrounding'"
+          + " AND category <>'merch'"
           + " LIMIT ? OFFSET ?";
 
   List<Product> SelectProductsByName(String keyword, String page, int pageSize) throws OGKMException {
@@ -366,7 +366,7 @@ class ProductsDAO {
           + "photoUrl,musicUrl,"
           + "group_concat(distinct products.id)FROM products JOIN order_items ON order_items.product_id=products.id"
           + " JOIN orders ON orders.id=order_items.order_id"
-          + " Where (member_id=?)AND products.category<>'Surrounding'"
+          + " Where (member_id=?)AND products.category<>'merch'"
           + " GROUP BY products.id Order by order_items.order_id desc";
 
   List<Product> selectMusicProductsCustomerById(String memberid) throws OGKMException {
@@ -408,7 +408,7 @@ class ProductsDAO {
           + "photoUrl, shelfDate, stock"
           + " FROM products"
           + " WHERE singer LIKE ? "
-          + " AND id <> ? AND category <>'surrounding'"
+          + " AND id <> ? AND category <>'merch'"
           + " Order by shelfDate desc limit 3";
 
   List<Product> selectProductsBySingerRelated(String singer, String id) throws OGKMException {
@@ -541,7 +541,7 @@ class ProductsDAO {
       "SELECT id,name,singer,Sales,"
           + "curdate() - INTERVAL 14 day "
           + " FROM products"
-          + " WHERE category <> 'surrounding'"
+          + " WHERE category <> 'merch'"
           + " order by Sales Desc limit 10 ";
 
   List<Product> selectProductsBySongTop10() throws OGKMException {
@@ -577,7 +577,7 @@ class ProductsDAO {
   private static final String SelectProductsBySingerTop10 =
       "SELECT singer, SUM(Sales) AS singerSales " +
           "FROM products " +
-          "WHERE category <> 'surrounding' " +
+          "WHERE category <> 'merch' " +
           "GROUP BY singer " +
           "ORDER BY singerSales DESC " +
           "LIMIT 10";
