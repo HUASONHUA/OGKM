@@ -317,15 +317,15 @@
     function repopulateFrom() {
 		<%if ("POST".equals(request.getMethod())) {%>
         // 		alert("POST");
-        $("intput[name=AcctNo]").val('<%=request.getParameter("AcctNo")%>');
-        $("intput[name=name]").val('<%=request.getParameter("name")%>');
-        $("intput[name=password]").val('<%=request.getParameter("password")%>');
-        $("intput[name=email]").val('<%=request.getParameter("email")%>');
-        $("intput[name=phone]").val('<%=request.getParameter("phone")%>');
+        $("input[name=AcctNo]").val('<%=request.getParameter("AcctNo")%>');
+        $("input[name=name]").val('<%=request.getParameter("name")%>');
+        $("input[name=password]").val('<%=request.getParameter("password")%>');
+        $("input[name=email]").val('<%=request.getParameter("email")%>');
+        $("input[name=phone]").val('<%=request.getParameter("phone")%>');
         $("select[name=address]").val('<%=request.getParameter("address")%>');
-        $("intput[name=address1]").val('<%=request.getParameter("address1")%>');
+        $("input[name=address1]").val('<%=request.getParameter("address1")%>');
         $("select[name=gender]").val('<%=request.getParameter("gender")%>');
-        $("intput[name=birthday]").val('<%=request.getParameter("birthday")%>');
+        $("input[name=birthday]").val('<%=request.getParameter("birthday")%>');
         $(".sub[value='<%=request.getParameter("sub")%>']").prop('checked', true);
 	<%}%>
 }
