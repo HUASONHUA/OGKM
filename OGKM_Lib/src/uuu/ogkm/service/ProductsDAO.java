@@ -367,7 +367,8 @@ class ProductsDAO {
           + "group_concat(distinct products.id)FROM products JOIN order_items ON order_items.product_id=products.id"
           + " JOIN orders ON orders.id=order_items.order_id"
           + " Where (member_id=?)AND products.category<>'merch'"
-          + " GROUP BY products.id Order by order_items.order_id desc";
+          + " GROUP BY products.id,orders.id,member_id,category,name,order_items.order_id,photoUrl,musicUrl"
+          + " Order by order_items.order_id desc";
 
   List<Product> selectMusicProductsCustomerById(String memberid) throws OGKMException {
     List<Product> list = new ArrayList<>();
