@@ -10,7 +10,7 @@ UPDATE products SET stock=stock-1 WHERE category ='merch' AND stock>=stock AND i
 UPDATE product_merch SET stock=stock-3 WHERE stock>=stock  AND product_id = 11 AND typecolorname='Ayase布偶' ;
 
 
-UPDATE product_surrounding_sizes SET stock=stock-1 WHERE stock>=stock  AND product_id = 11  AND typecolorname='黑' AND size='L' ;
+UPDATE product_merch_sizes SET stock=stock-1 WHERE stock>=stock  AND product_id = 11  AND typecolorname='黑' AND size='L' ;
 
 
-UPDATE product_surrounding_sizes SET stock=stock-1 WHERE  stock>=stock   AND product_id = 24 AND typecolorname='' AND size='S' ;
+UPDATE product_merch_sizes SET stock=stock-1 WHERE  stock>=stock   AND product_id = 24 AND typecolorname='' AND size='S' ;

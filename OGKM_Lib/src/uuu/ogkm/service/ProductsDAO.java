@@ -284,14 +284,14 @@ class ProductsDAO {
           + " description,shelfDate, discount,auditionUrl,"
           + " product_merch.product_id,product_merch.typecolorname,iconUrl,"
           + " COUNT(size) as size_count,COUNT(size)>0 as has_size,"
-          + " MIN(product_surrounding_sizes.unitprice) as min_price,"
-          + " MAX(product_surrounding_sizes.unitprice) as max_price,"
-          + " products.stock,if(COUNT(size)>0,sum(product_surrounding_sizes.stock),product_merch.stock)  AS surrounding_stock,"
+          + " MIN(product_merch_sizes.unitprice) as min_price,"
+          + " MAX(product_merch_sizes.unitprice) as max_price,"
+          + " products.stock,if(COUNT(size)>0,sum(product_merch_sizes.stock),product_merch.stock)  AS surrounding_stock,"
           + " products.photoUrl,product_merch.colorphotourl AS surrounding_photoUrl"
           + " FROM products LEFT JOIN product_merch ON products.id=product_merch.product_id"
-          + " LEFT JOIN product_surrounding_sizes ON products.id=product_surrounding_sizes.product_id"
-          + " AND(product_merch.typecolorname=product_surrounding_sizes.typecolorname"
-          + " OR (product_merch.typecolorname is null AND product_surrounding_sizes.typecolorname=''))"
+          + " LEFT JOIN product_merch_sizes ON products.id=product_merch_sizes.product_id"
+          + " AND(product_merch.typecolorname=product_merch_sizes.typecolorname"
+          + " OR (product_merch.typecolorname is null AND product_merch_sizes.typecolorname=''))"
           + " WHERE id=?"
           + " GROUP BY id, product_merch.typecolorname";
 
@@ -444,10 +444,10 @@ class ProductsDAO {
 
   //SIZE
   private static final String SELECT_PRODUCT_SIZE_SET =
-      "SELECT product_surrounding_sizes.product_id,product_surrounding_sizes.typecolorname ,"
-          + "size, ordinal, product_surrounding_sizes.stock,products.discount,"
-          + "product_surrounding_sizes.unitprice* (100-products.discount)/100 as price"
-          + " FROM product_surrounding_sizes JOIN products ON products.id=product_surrounding_sizes.product_id"
+      "SELECT product_merch_sizes.product_id,product_merch_sizes.typecolorname ,"
+          + "size, ordinal, product_merch_sizes.stock,products.discount,"
+          + "product_merch_sizes.unitprice* (100-products.discount)/100 as price"
+          + " FROM product_merch_sizes JOIN products ON products.id=product_merch_sizes.product_id"
           + " WHERE product_id =? AND typecolorname=?";
 
   Set<Size> selectProductSizeSet(String productId, String typecolorname) throws OGKMException {

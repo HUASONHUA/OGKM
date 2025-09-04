@@ -34,14 +34,14 @@ Where member_id='A173619629' AND orders.id='10';
 /**/
 SELECT products.id, product_merch.product_id,
 name,product_merch.typecolorname,
-products.unitPrice, product_surrounding_sizes.unitprice*(100-discount)/100 as size_unitprice,
+products.unitPrice, product_merch_sizes.unitprice*(100-discount)/100 as size_unitprice,
 description, shelfDate,discount, category,
 products.photoUrl,colorphotourl,iconUrl,
-products.stock,product_merch.stock AS surrounding_stock,product_surrounding_sizes.size AS size_stock,
+products.stock,product_merch.stock AS surrounding_stock,product_merch_sizes.size AS size_stock,
 product_merch.colorphotourl ,products.photoUrl AS surrounding_photoUrl
 FROM products LEFT JOIN product_merch ON products.id=product_merch.product_id
-  LEFT JOIN product_surrounding_sizes ON  products.id=product_surrounding_sizes.product_id
-   AND product_merch.typecolorname=product_surrounding_sizes.typecolorname
+  LEFT JOIN product_merch_sizes ON  products.id=product_merch_sizes.product_id
+   AND product_merch.typecolorname=product_merch_sizes.typecolorname
 WHERE id='24' 
 GROUP BY ordinal;
 /**/

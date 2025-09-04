@@ -28,7 +28,7 @@ public class OrderDAO {
 			"UPDATE product_merch SET stock=stock-? "
 			+" WHERE stock>=?  AND product_id = ? AND typecolorname=?";//數，數，ID，顏色
 	private static final String UPDATE_PRODUCT_SURROUNDING_SIZES_STOCK=
-	"UPDATE product_surrounding_sizes SET stock=stock-?"
+	"UPDATE product_merch_sizes SET stock=stock-?"
     +" WHERE stock>=?  AND product_id = ?  AND typecolorname=? AND size=?";//數，數，ID，顏色，尺寸 
 	
 	
