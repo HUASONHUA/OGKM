@@ -361,14 +361,14 @@ class ProductsDAO {
 
   //以購買音樂
   private static final String SelectMusicProductsCustomerById =
-      "SELECT products.id,orders.id, member_id,"
-          + "category,name, order_items.order_id,"
-          + "photoUrl,musicUrl,"
-          + "group_concat(distinct products.id)FROM products JOIN order_items ON order_items.product_id=products.id"
-          + " JOIN orders ON orders.id=order_items.order_id"
-          + " Where (member_id=?)AND products.category<>'merch'"
-          + " GROUP BY products.id,orders.id,member_id,category,name,order_items.order_id,photoUrl,musicUrl"
-          + " Order by order_items.order_id desc";
+      "SELECT products.id,GROUP_CONCAT(DISTINCT orders.id) AS order_ids, member_id,"
+      + "category,name, GROUP_CONCAT(DISTINCT order_items.order_id) AS order_item_ids,"
+      + "photoUrl,musicUrl,"
+      + "group_concat(distinct products.id)FROM products JOIN order_items ON order_items.product_id=products.id"
+      + " JOIN orders ON orders.id=order_items.order_id"
+      + " Where (member_id=?) AND products.category<>'merch'"
+      + " GROUP BY products.id"
+      + " Order by MAX(order_items.order_id) desc";
 
   List<Product> selectMusicProductsCustomerById(String memberid) throws OGKMException {
     List<Product> list = new ArrayList<>();
