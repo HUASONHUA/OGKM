@@ -540,7 +540,7 @@
       }
 
       .pictureword div {
-        margin: 0 0 0.5em 0;
+        margin: 0 0 0.3em 0;
         width: 15vw;
         max-width: 100%;
         white-space: nowrap;/*固定一行*/
