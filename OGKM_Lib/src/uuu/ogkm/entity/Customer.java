@@ -59,7 +59,7 @@ public class Customer {
         Idnum1 = (idchar1 - 65) + 9;
       else if (idchar1 >= 'P' && idchar1 <= 'V')
         Idnum1 = (idchar1 - 65) + 8;
-      else if (idchar1 >= 'X' || idchar1 <= 'Y')
+      else if (idchar1 >= 'X' && idchar1 <= 'Y')
         Idnum1 = (idchar1 - 65) + 7;
       else
         switch (idchar1) {
@@ -80,10 +80,9 @@ public class Customer {
         }
 
       int sum = Idnum1 / 10 + (Idnum1 % 10) * 9;
-      int i = 1;
       int j = 8;
-      for (; id.charAt(i) <= id.charAt(8); i++) {
-        sum += sum + (id.charAt(i) - '0') * j;
+      for (int i = 1; i <= 8; i++) {
+        sum += (id.charAt(i) - '0') * j;
         j--;
       }
       sum += (id.charAt(9) - 48);
