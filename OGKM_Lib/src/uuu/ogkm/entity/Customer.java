@@ -85,7 +85,7 @@ public class Customer {
         sum += (id.charAt(i) - '0') * j;
         j--;
       }
-      sum += (id.charAt(9) - 48);
+      sum += (id.charAt(9) - '0');
       return sum % 10 == 0;
     } else {
       return false;
