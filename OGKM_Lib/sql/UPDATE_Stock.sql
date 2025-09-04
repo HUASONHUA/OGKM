@@ -7,7 +7,7 @@ SELECT * FROM ogk.product_real_time_stock
 UPDATE products SET Sales=Sales+1 WHERE category <>'merch' AND id = 1;
 UPDATE products SET stock=stock-1 WHERE category ='merch' AND stock>=stock AND id = 1;
 
-UPDATE product_surrounding SET stock=stock-3 WHERE stock>=stock  AND product_id = 11 AND typecolorname='Ayase布偶' ;
+UPDATE product_merch SET stock=stock-3 WHERE stock>=stock  AND product_id = 11 AND typecolorname='Ayase布偶' ;
 
 
 UPDATE product_surrounding_sizes SET stock=stock-1 WHERE stock>=stock  AND product_id = 11  AND typecolorname='黑' AND size='L' ;

@@ -35,25 +35,25 @@ payment_type, payment_fee, payment_note,
 delivery_type,delivery_fee, delivery_note, status,
 order_id,order_items.product_id,
 category,products.photoUrl,products.name AS product_name,
-order_items.typecolorname,product_surrounding.typecolorname AS p_typecolorname,
-product_surrounding.colorphotourl,size,price,quantity
+order_items.typecolorname,product_merch.typecolorname AS p_typecolorname,
+product_merch.colorphotourl,size,price,quantity
 FROM orders JOIN order_items ON orders.id=order_items.order_id
 JOIN products ON order_items.product_id=products.id
-LEFT JOIN product_surrounding ON order_items.product_id=product_surrounding.product_id
-AND order_items.typecolorname=product_surrounding.typecolorname
+LEFT JOIN product_merch ON order_items.product_id=product_merch.product_id
+AND order_items.typecolorname=product_merch.typecolorname
 Where member_id='A173619629' AND orders.id='10';
 
 /**/
-SELECT products.id, product_surrounding.product_id,
-name,product_surrounding.typecolorname,
+SELECT products.id, product_merch.product_id,
+name,product_merch.typecolorname,
 products.unitPrice, product_surrounding_sizes.unitprice*(100-discount)/100 as size_unitprice,
 description, shelfDate,discount, category,
 products.photoUrl,colorphotourl,iconUrl,
-products.stock,product_surrounding.stock AS surrounding_stock,product_surrounding_sizes.size AS size_stock,
-product_surrounding.colorphotourl ,products.photoUrl AS surrounding_photoUrl
-FROM products LEFT JOIN product_surrounding ON products.id=product_surrounding.product_id
+products.stock,product_merch.stock AS surrounding_stock,product_surrounding_sizes.size AS size_stock,
+product_merch.colorphotourl ,products.photoUrl AS surrounding_photoUrl
+FROM products LEFT JOIN product_merch ON products.id=product_merch.product_id
   LEFT JOIN product_surrounding_sizes ON  products.id=product_surrounding_sizes.product_id
-   AND product_surrounding.typecolorname=product_surrounding_sizes.typecolorname
+   AND product_merch.typecolorname=product_surrounding_sizes.typecolorname
 WHERE id='24' 
 GROUP BY ordinal;
 /**/

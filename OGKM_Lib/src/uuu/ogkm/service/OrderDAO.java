@@ -25,7 +25,7 @@ public class OrderDAO {
 			"UPDATE products SET stock=stock-?"
 			+" WHERE stock>=? AND id = ? AND category ='merch'";//數，數，ID
 	private static final String UPDATE_PRODUCT_SURROUNDING_STOCK=
-			"UPDATE product_surrounding SET stock=stock-? "
+			"UPDATE product_merch SET stock=stock-? "
 			+" WHERE stock>=?  AND product_id = ? AND typecolorname=?";//數，數，ID，顏色
 	private static final String UPDATE_PRODUCT_SURROUNDING_SIZES_STOCK=
 	"UPDATE product_surrounding_sizes SET stock=stock-?"
@@ -225,12 +225,12 @@ public class OrderDAO {
 			+ "delivery_type,delivery_fee, delivery_note, status,"
 			+ "order_id,order_items.product_id,"
 			+ "category,products.photoUrl,products.name AS product_name,"
-			+ "order_items.typecolorname,product_surrounding.typecolorname AS p_typecolorname,"
-			+ "product_surrounding.colorphotourl,size,price,quantity"
+			+ "order_items.typecolorname,product_merch.typecolorname AS p_typecolorname,"
+			+ "product_merch.colorphotourl,size,price,quantity"
 			+" FROM orders JOIN order_items ON orders.id=order_items.order_id"
 			+" JOIN products ON order_items.product_id=products.id"
-			+" LEFT JOIN product_surrounding ON order_items.product_id=product_surrounding.product_id"
-			+" AND order_items.typecolorname=product_surrounding.typecolorname"
+			+" LEFT JOIN product_merch ON order_items.product_id=product_merch.product_id"
+			+" AND order_items.typecolorname=product_merch.typecolorname"
 			+" Where member_id=? AND orders.id=?";
 	Order selectHistoryByCustomer(String customerId, String orderId) throws OGKMException {
 		Order order = null;
