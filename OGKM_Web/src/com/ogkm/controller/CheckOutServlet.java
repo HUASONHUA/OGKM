@@ -104,6 +104,8 @@ public class CheckOutServlet extends HttpServlet {
           return;
         }
         response.sendRedirect("order.jsp?orderId=" + order.getId());
+
+        cart.remove();
         return;
 
       } catch (OGKMStockShorttageException e) {

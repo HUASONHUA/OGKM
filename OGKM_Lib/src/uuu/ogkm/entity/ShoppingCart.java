@@ -111,6 +111,10 @@ public class ShoppingCart {
 	public void remove(Cartltem item) {
 		cartMap.remove(item);
 	}
+
+	public void remove() {
+		cartMap.clear();
+	}
 	
 	
 	@Override
