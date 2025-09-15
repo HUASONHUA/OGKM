@@ -182,7 +182,7 @@
       <h2>產品描述</h2>
       <%=p.getDescription()%>
     </div>
-    
+
   <%} %>
   </div>
   <script>

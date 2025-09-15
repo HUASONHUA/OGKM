@@ -7,7 +7,6 @@ private int stock;
 private int ordinal;
 private double unitprice;
 
-
 public String getName() {
 	return name;
 }
