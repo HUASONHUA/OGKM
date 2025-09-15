@@ -66,15 +66,15 @@ public class OrderDAO {
 					int qty = orderItem.getQuantity();
 					
 					PreparedStatement pstmtupdate;
-					if(typeColor!=null && size!=null && size.length()>0 ||
-						typeColor==null && size!=null && size.length()>0) {
+					if((typeColor!=null && size!=null && !size.isEmpty()) ||
+							(typeColor==null && size!=null && !size.isEmpty())) {
 						pstmtupdate = updatecolorsize_Stock;	
 						pstmtupdate.setInt(1, qty);
 						pstmtupdate.setInt(2, qty);
 						pstmtupdate.setInt(3, p.getId());
 						pstmtupdate.setString(4, typeColor!=null?typeColor.getTypecolorname():"");
 						pstmtupdate.setString(5, size);									
-					}else if(typeColor!=null && (size==null || size.length()==0)) {
+					}else if(typeColor!=null && (size==null && size.isEmpty())) {
 						pstmtupdate = updatecolor_Stock;
 						pstmtupdate.setInt(1, qty);
 						pstmtupdate.setInt(2, qty);
