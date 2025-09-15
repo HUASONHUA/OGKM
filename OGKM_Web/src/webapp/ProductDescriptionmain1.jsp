@@ -116,68 +116,74 @@
   <jsp:include page="/SubViews/NAV.jsp"/>
   <div class="observebag">
 
-   <% if(p==null){ %>
-      <p>查無此商品(id=<%=productId %>)</p>
-      <%}else{ %>
-        <%--=p--%>
-          <article class="Descriptionbag">
-            <img class="photo" src="<%=p.getPhotoUrl()%>">
-            <div class="ProductDescription">
-              <div>產品:<%=p.getName() %> </div>
-              <div>歌手:<%=p.getSinger()%></div>
-              <div>上架日期:<%=p.getShelfDate()%></div>
-              <div>庫存:<span id='colorStock'></span> <span id='sizeStock'><%=!p.isTypecolorMapEmpty()||p.hasSize()==true?"請選顏色或庫存":p.getStock()%></span></div>
-              <div >優惠價:<%=p instanceof Outlet?((Outlet)p).getDiscountString():"" %> 
-              NT<span id="unitPrice" data-price="<%= p.getUnitPrice()%>"><%= p.getUnitPrice()%></span> </div>
-
-              <form id='cartForm' class="TypeColorbag" action="add_to_cart.do" 
-              method="POST" onsubmit="return submitCart(this)">
-                <input type='hidden' value='<%= p.getId() %>' name='productId'>
-                <% if(p.getTypecolorMapsize()>0){%>
-                  <label class="typecolorlabel">類型(顏色):</label>
-                  <div class="typecolor">
-                    <% for(TypeColor typecolor:p.getTypecolorMapvalues()){%>
-                      <label>
-                        <input type='radio' name='typecolor' value='<%= typecolor.getTypecolorname() %>' required>
-                        <img class='icon'
-                          src="<%= typecolor.getIconUrl()==null?typecolor.getPhotourl():typecolor.getIconUrl() %>"
-                          alt='產品小圖示' title='<%= typecolor.getTypecolorname()%>' onclick='changeData(this)'
-                          data-stock='<%= typecolor.getStock() %>' data-photo='<%= typecolor.getPhotourl() %>'>
-                      </label>
-                      <% } %>
-                  </div>
-                  <% } 
-					if(p.hasSize()){
-				  %>
-				  <label id='sizeStock1'><%=!p.isTypecolorMapEmpty()?"請先選擇顏色":""%></label>
-                  <div class="sizeBigbag">
-                   <label>尺寸:</label>
-                    <select class="sizebag" name='size' onchange="changeSizeOption(this)" size="1" required>
-                      <option value='' disabled>請選擇</option >
-				    </select>
-                  </div>
-                  <% } %>
-                    <div class="quantitynumber">
-                      <label>數量:</label>
-                      <input type='number' name='quantity' 
-                      value='1' min='1' max='<%= p.getStock()%>'>
-                    </div>
-                    <div class="shippingcartBtn">
-                      <input class="Directpurchase" type="submit" 
-                      onclick='this.form.submited=true;' value='直接購買'>
-                      <button type="submit" title="加入購物車">
-                        <i class="fas fa-cart-arrow-down"></i>
-                      </button>
-                    </div>
-              </form>
+  <% if(p==null){ %>
+    <p>查無此商品(id=<%=productId %>)</p>
+  <%}else{ %>
+    <article class="Descriptionbag">
+      <img class="photo" src="<%=p.getPhotoUrl()%>">
+      <div class="ProductDescription">
+        <div>產品:<%=p.getName() %> </div>
+        <div>歌手:<%=p.getSinger()%></div>
+        <div>上架日期:<%=p.getShelfDate()%></div>
+        <div>庫存:
+          <span id='colorStock'></span>
+          <span id='sizeStock'>
+            <%=!p.isTypecolorMapEmpty() || p.hasSize() == true ? "請選顏色或庫存":p.getStock()%>
+          </span>
+        </div>
+        <div >優惠價:<%=p instanceof Outlet?((Outlet)p).getDiscountString():"" %>
+            NT<span id="unitPrice" data-price="<%= p.getUnitPrice()%>">
+          <%= p.getUnitPrice()%></span>
+        </div>
+        <form id='cartForm' class="TypeColorbag" action="add_to_cart.do"
+            method="POST" onsubmit="return submitCart(this)">
+          <input type='hidden' value='<%= p.getId() %>' name='productId'>
+          <% if(p.getTypecolorMapsize()>0){%>
+            <label class="typecolorlabel">類型(顏色):</label>
+            <div class="typecolor">
+            <% for(TypeColor typecolor:p.getTypecolorMapvalues()){%>
+              <label>
+                <input type='radio' name='typecolor' value='<%= typecolor.getTypecolorname() %>' required>
+                <img class='icon'
+                    src="<%= typecolor.getIconUrl()==null?typecolor.getPhotourl():typecolor.getIconUrl() %>"
+                    alt='產品小圖示' title='<%= typecolor.getTypecolorname()%>' onclick='changeData(this)'
+                    data-stock='<%= typecolor.getStock() %>' data-photo='<%= typecolor.getPhotourl() %>'>
+              </label>
+            <% } %>
             </div>
-
-          </article>
-          <div class="singerRelated">
-            <h2>產品描述</h2>
-            <%=p.getDescription()%>
+          <% } if(p.hasSize()) { %>
+          <label id='sizeStock1'>
+            <%=!p.isTypecolorMapEmpty()?"請先選擇顏色":""%>
+          </label>
+          <div class="sizeBigbag">
+            <label>尺寸:</label>
+            <select class="sizebag" name='size' onchange="changeSizeOption(this)" size="1" required>
+              <option value='' disabled>請選擇</option >
+				    </select>
           </div>
-          <%} %>
+          <% } %>
+          <div class="quantitynumber">
+            <label>數量:</label>
+            <input type='number' name='quantity'
+              value='1' min='1' max='<%= p.getStock()%>'>
+          </div>
+          <div class="shippingcartBtn">
+            <input class="Directpurchase" type="submit"
+              onclick='this.form.submited=true;' value='直接購買'>
+            <button type="submit" title="加入購物車">
+              <i class="fas fa-cart-arrow-down"></i>
+            </button>
+          </div>
+        </form>
+      </div>
+
+    </article>
+    <div class="singerRelated">
+      <h2>產品描述</h2>
+      <%=p.getDescription()%>
+    </div>
+    
+  <%} %>
   </div>
   <script>
  	init();
