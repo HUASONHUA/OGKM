@@ -37,7 +37,7 @@
     //1.取得REQUEST的FORM DATA
     String keyword = request.getParameter("keyword");
     String category = request.getParameter("category");
-    String pages = request.getParameter("page");
+    String pages = request.getParameter("page") != null ? request.getParameter("page") : "1" ;
     String keywordname = request.getParameter("keywordname");
     String keywordsinger = request.getParameter("keywordsinger");
     //後續加上分類查詢
