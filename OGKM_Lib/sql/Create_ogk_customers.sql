@@ -10,6 +10,7 @@ CREATE TABLE `customers` (
   `subscribed` tinyint NOT NULL DEFAULT '0',
   `blood_type` varchar(2) DEFAULT NULL,
   `discount` int unsigned NOT NULL DEFAULT '0',
+  `isAdmin` tinyint NOT NULL DEFAULT '0',
   PRIMARY KEY (`id`),
   UNIQUE KEY `email_UNIQUE` (`email`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci
