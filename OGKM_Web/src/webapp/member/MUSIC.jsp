@@ -15,91 +15,90 @@
 <body>
 <jsp:include page="/SubViews/NAV.jsp"/>
   <%
-  ProductService ps=new ProductService(); 
+    ProductService ps=new ProductService();
     List<Product> list;
     Customer member = (Customer)session.getAttribute("member");
     list = ps.getselectMusicProductsCustomerById(member);
     
     if (member != null) {
-      %>
-      <% if(list==null || list.isEmpty()) {%>
-	        <p id="pbag">無購買音樂</p>		
-	  <%}else{ %>
-	<div id="imageslider" class="transparency">
-		<ul>
-			<li aspectindex="0"><img src="" /></li>
-			<li aspectindex="1"><img src="" /></li>
-			<li aspectindex="2"><img src="" /></li>
-			<li aspectindex="3"><img src="" /></li>
+  %>
+    <% if(list==null || list.isEmpty()) {%>
+    <p id="pbag">無購買音樂</p>
+    <% } else { %>
+    <div id="imageslider" class="transparency">
+		  <ul>
+			  <li aspectindex="0"><img src="" /></li>
+			  <li aspectindex="1"><img src="" /></li>
+			  <li aspectindex="2"><img src="" /></li>
+			  <li aspectindex="3"><img src="" /></li>
+		  </ul>
+	  </div>
+	  <div>
+	    <input id="seekAudioTime" type="range" min="0" value=""
+	      onchange="seekAudioTime()" ontouchmove="seekAudioTime()">
+	  </div>
+	  <div id="playAudioTime"></div>
 
-		</ul>
-	</div>
-	<div><input id="seekAudioTime" type="range" min="0" value="" onchange="seekAudioTime()"
-			ontouchmove="seekAudioTime()">
-	</div>
-	<div id="playAudioTime"></div>
+	  <div class="audiobag">
+		  <div class="nextprevWidth">
+		  	<div id="prevcss">
+			    <button id="prevBtn">
+            <i class="fas fa-backward"></i>
+			    </button>
+        </div>
+			  <div id="transparency">
+			    <button id="playBtn">
+			      <img src="<%=request.getContextPath()%>/images/audio/play1.png">
+			    </button>
+			  </div>
+			  <div id="nextcss"><button id="nextBtn">
+			    <i class="fas fa-forward"></i>
+			  </button></div>
+		  </div>
 
-	<div class="audiobag">
-		<div class="nextprevWidth">
-			<div id="prevcss">
-			 <button id="prevBtn">
-			  <i class="fas fa-backward"></i>
-			 </button></div>
-			<div id="transparency">
-			 <button id="playBtn">
-			  <img src="<%=request.getContextPath()%>/images/audio/play1.png">
-			 </button>
-			</div>
-			<div id="nextcss"><button id="nextBtn">
-			 <i class="fas fa-forward"></i>
-			</button></div>
-		</div>
+		  <audio id="audiovisual" src="" type="audio/mpeg"></audio>
 
-		<audio id="audiovisual" src="" type="audio/mpeg"></audio>
+		  <div>
+			  <a id="volumeBtn">
+			    <img src="<%=request.getContextPath()%>/images/audio/volume.png">
+			  </a>
+			  <input id="volumerange" ontouchmove="volumeUpDownHandler()"
+          type="range" value="25" min="0" max="100">
+			  <a id="loopBtn" data-control="auto">
+			    <img src="<%=request.getContextPath()%>/images/audio/loop.png">
+			  </a>
+		  </div>
+	  </div>
+	  <div id="songBanner">
+		  <div class="leftside">
+      <!-- 	<div id="songlist">歌曲列表</div> -->
+      <% if (list !=null && list.size()> 0) {
+           for (int i = 0; i < list.size(); i++) {
+           Product p=list.get(i); %>
+        <div class="songbag">
+	        <div class="songcolumnbag">
+		        <span><%=i+1%></span>
+		        <a class="changemuisc" songcolumnindex="<%=i+1%>"
+		            data-src='<%=request.getContextPath()%>/<%=p.getMusicUrl()%>'
+		            data-photo="<%=request.getContextPath()%>/<%=p.getPhotoUrl() %>"
+		            onclick="Achangemuisc(this)">
+		          <img src="<%=request.getContextPath()%>/images/audio/play1.png"
+		            onclick="Achangeing(this)">
+		        </a>
+		        <img id="songcolumnimg"
+		          src="<%=request.getContextPath()%>/<%=p.getPhotoUrl()%>">
+		        <div class="playAudioTime"><%=p.getName() %></div>
+	        </div>
+        </div>
+	    <% } } %>
+	    </div>
+      <div class="rightside">歌曲列表</div>
+	  </div>
+    <% } %>
+	<% } else { %>
+    alert('請先登入!');
+	<% } %>
 
-		<div>
-			<a id="volumeBtn">
-			 <img src="<%=request.getContextPath()%>/images/audio/volume.png">
-			</a>
-			<input id="volumerange" ontouchmove="volumeUpDownHandler()" 
-			type="range" value="25" min="0" max="100">
-			<a id="loopBtn" data-control="auto">
-			 <img src="<%=request.getContextPath()%>/images/audio/loop.png">
-			</a>
-		</div>
-	</div>
-	<div id="songBanner">
-		<div class="leftside">
-<!-- 	<div id="songlist">歌曲列表</div> -->
-<% if (list !=null && list.size()> 0) {
-
-          for (int i = 0; i < list.size(); i++) { 
-        	  Product p=list.get(i); %>
-   <div class="songbag">
-	<div class="songcolumnbag">
-		<span><%=i+1%></span>
-		<a class="changemuisc" songcolumnindex="<%=i+1%>" 
-		 data-src='<%=request.getContextPath()%>/<%=p.getMusicUrl()%>'
-		 data-photo="<%=request.getContextPath()%>/<%=p.getPhotoUrl() %>"
-		 onclick="Achangemuisc(this)">
-		 <img src="<%=request.getContextPath()%>/images/audio/play1.png" 
-		  onclick="Achangeing(this)">
-		</a>
-		<img id="songcolumnimg" 
-		 src="<%=request.getContextPath()%>/<%=p.getPhotoUrl()%>">
-		<div class="playAudioTime"><%=p.getName() %></div>
-	</div>
-   </div>
-   
-	<%}}%>
-	</div>
-		<div class="rightside">歌曲列表</div>
-	</div>
-       <% }%>
-		
-	<%} else {%>
-         alert('請先登入!');
-	<%}%>
 	<style>
 	#pbag{
 	display: flex;
