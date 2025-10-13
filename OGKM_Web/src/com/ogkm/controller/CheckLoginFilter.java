@@ -1,7 +1,6 @@
 package com.ogkm.controller;
 
 import java.io.IOException;
-import java.net.http.HttpRequest;
 
 import jakarta.servlet.Filter;
 import jakarta.servlet.FilterChain;
@@ -14,7 +13,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 
-import uuu.ogkm.entity.Customer;
+import com.ogkm.entity.Customer;
 
 /**
  * Servlet Filter implementation class CheckLoginFilter

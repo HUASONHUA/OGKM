@@ -1,10 +1,10 @@
-<%@page import="uuu.ogkm.service.ProductService"%>
-<%@page import="uuu.ogkm.entity.OrderItem"%>
-<%@page import="uuu.ogkm.entity.Product"%>
-<%@page import="uuu.ogkm.entity.Order"%>
-<%@page import="uuu.ogkm.service.OrderService"%>
-<%@page import="uuu.ogkm.entity.VIP"%>
-<%@page import="uuu.ogkm.entity.Customer"%>
+<%@page import="com.ogkm.service.ProductService"%>
+<%@page import="com.ogkm.entity.OrderItem"%>
+<%@page import="com.ogkm.entity.Product"%>
+<%@page import="com.ogkm.entity.Order"%>
+<%@page import="com.ogkm.service.OrderService"%>
+<%@page import="com.ogkm.entity.VIP"%>
+<%@page import="com.ogkm.entity.Customer"%>
 <%@page import="java.util.List"%>
 <%@page pageEncoding="UTF-8"%>
 <!DOCTYPE html>

@@ -1,7 +1,7 @@
-<%@page import="uuu.ogkm.entity.TypeColor"%>
-<%@page import="uuu.ogkm.entity.Outlet"%>
-<%@page import="uuu.ogkm.service.ProductService"%>
-<%@page import="uuu.ogkm.entity.Product"%>
+<%@page import="com.ogkm.entity.TypeColor"%>
+<%@page import="com.ogkm.entity.Outlet"%>
+<%@page import="com.ogkm.service.ProductService"%>
+<%@page import="com.ogkm.entity.Product"%>
 <%@ page  pageEncoding="UTF-8"%>
 <!--ajax  -->
  <script>

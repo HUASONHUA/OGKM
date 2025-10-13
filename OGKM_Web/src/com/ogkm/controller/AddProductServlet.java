@@ -1,10 +1,10 @@
 package com.ogkm.controller;
 
-import uuu.ogkm.entity.Outlet;
-import uuu.ogkm.service.ProductService;
-import uuu.ogkm.entity.Product;
-import uuu.ogkm.entity.TypeColor;
-import uuu.ogkm.entity.Size;
+import com.ogkm.entity.Outlet;
+import com.ogkm.service.ProductService;
+import com.ogkm.entity.Product;
+import com.ogkm.entity.TypeColor;
+import com.ogkm.entity.Size;
 
 
 import jakarta.servlet.ServletException;

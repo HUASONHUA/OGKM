@@ -1,6 +1,6 @@
-<%@page import="uuu.ogkm.service.ProductService"%>
+<%@page import="com.ogkm.service.ProductService"%>
 
-<%@page import="uuu.ogkm.entity.Size"%>
+<%@page import="com.ogkm.entity.Size"%>
 <%@page import="java.util.Set"%>
 <%@ page pageEncoding="UTF-8"%>
 <%

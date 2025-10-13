@@ -4,8 +4,8 @@
 <%@page import="allPay.payment.integration.*"%>
 <%@page import="java.time.LocalTime"%>
 <%@page import="java.time.LocalDate"%>
-<%@page import="uuu.ogkm.entity.Customer"%>
-<%@page import="uuu.ogkm.entity.Order"%>
+<%@page import="com.ogkm.entity.Customer"%>
+<%@page import="com.ogkm.entity.Order"%>
 <%@page import="java.util.List"%>
 <%@page import="java.util.ArrayList"%>
 <%

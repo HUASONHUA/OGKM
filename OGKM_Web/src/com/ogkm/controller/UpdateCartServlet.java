@@ -1,7 +1,6 @@
 package com.ogkm.controller;
 
 import java.io.IOException;
-import java.util.Iterator;
 
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
@@ -10,8 +9,8 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 
-import uuu.ogkm.entity.Cartltem;
-import uuu.ogkm.entity.ShoppingCart;
+import com.ogkm.entity.Cartltem;
+import com.ogkm.entity.ShoppingCart;
 
 /**
  * Servlet implementation class UpdateCartServlet

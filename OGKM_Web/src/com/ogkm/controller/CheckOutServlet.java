@@ -9,22 +9,19 @@ import java.util.List;
 import jakarta.servlet.RequestDispatcher;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
-import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 
-import uuu.ogkm.entity.Customer;
-import uuu.ogkm.entity.DeliveryType;
-import uuu.ogkm.entity.Order;
-import uuu.ogkm.entity.PaymentType;
-import uuu.ogkm.entity.ShoppingCart;
-import uuu.ogkm.exception.LoginFailException;
-import uuu.ogkm.exception.OGKMException;
-import uuu.ogkm.exception.OGKMStockShorttageException;
-import uuu.ogkm.service.CustomerService;
-import uuu.ogkm.service.OrderService;
+import com.ogkm.entity.Customer;
+import com.ogkm.entity.DeliveryType;
+import com.ogkm.entity.Order;
+import com.ogkm.entity.PaymentType;
+import com.ogkm.entity.ShoppingCart;
+import com.ogkm.exception.OGKMException;
+import com.ogkm.exception.OGKMStockShorttageException;
+import com.ogkm.service.OrderService;
 
 /**
  * Servlet implementation class CheckOutServlet

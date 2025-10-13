@@ -8,9 +8,9 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
-import uuu.ogkm.entity.Customer;
-import uuu.ogkm.exception.OGKMException;
-import uuu.ogkm.service.OrderService;
+import com.ogkm.entity.Customer;
+import com.ogkm.exception.OGKMException;
+import com.ogkm.service.OrderService;
 
 /**
  * Servlet implementation class CreditCardCallBackServlet

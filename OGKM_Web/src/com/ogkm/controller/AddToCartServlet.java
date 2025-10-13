@@ -11,11 +11,11 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 
-import uuu.ogkm.entity.Product;
-import uuu.ogkm.entity.ShoppingCart;
-import uuu.ogkm.entity.Size;
-import uuu.ogkm.exception.OGKMException;
-import uuu.ogkm.service.ProductService;
+import com.ogkm.entity.Product;
+import com.ogkm.entity.ShoppingCart;
+import com.ogkm.entity.Size;
+import com.ogkm.exception.OGKMException;
+import com.ogkm.service.ProductService;
 
 /**
  * Servlet implementation class AddToCartServlet

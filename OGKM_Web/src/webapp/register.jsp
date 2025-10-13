@@ -1,4 +1,4 @@
-<%@page import="uuu.ogkm.entity.Customer"%>
+<%@page import="com.ogkm.entity.Customer"%>
 <%@page import="java.util.List"%>
 <%@page pageEncoding="UTF-8"%>
 <head>

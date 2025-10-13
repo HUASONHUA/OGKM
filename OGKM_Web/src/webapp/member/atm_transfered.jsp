@@ -1,7 +1,7 @@
 <%@page import="java.time.LocalDate"%>
-<%@page import="uuu.ogkm.entity.Order"%>
-<%@page import="uuu.ogkm.service.OrderService"%>
-<%@page import="uuu.ogkm.entity.Customer"%>
+<%@page import="com.ogkm.entity.Order"%>
+<%@page import="com.ogkm.service.OrderService"%>
+<%@page import="com.ogkm.entity.Customer"%>
 <%@ page pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>

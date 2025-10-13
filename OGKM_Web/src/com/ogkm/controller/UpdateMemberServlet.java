@@ -12,10 +12,10 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 
-import uuu.ogkm.entity.Customer;
-import uuu.ogkm.exception.DataInvalidException;
-import uuu.ogkm.exception.OGKMException;
-import uuu.ogkm.service.CustomerService;
+import com.ogkm.entity.Customer;
+import com.ogkm.exception.DataInvalidException;
+import com.ogkm.exception.OGKMException;
+import com.ogkm.service.CustomerService;
 
 /**
  * Servlet implementation class UpdateMemberServlet

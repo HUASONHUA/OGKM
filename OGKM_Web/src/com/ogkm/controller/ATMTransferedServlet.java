@@ -14,10 +14,10 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 
-import uuu.ogkm.entity.Customer;
-import uuu.ogkm.entity.Order;
-import uuu.ogkm.exception.OGKMException;
-import uuu.ogkm.service.OrderService;
+import com.ogkm.entity.Customer;
+import com.ogkm.entity.Order;
+import com.ogkm.exception.OGKMException;
+import com.ogkm.service.OrderService;
 
 /**
  * Servlet implementation class ATMTransferedServlet

@@ -1,10 +1,10 @@
-<%@page import="uuu.ogkm.entity.DeliveryType"%>
-<%@page import="uuu.ogkm.entity.PaymentType"%>
-<%@page import="uuu.ogkm.entity.ShoppingCart"%>
-<%@page import="uuu.ogkm.entity.Product"%>
-<%@page import="uuu.ogkm.entity.Cartltem"%>
-<%@page import="uuu.ogkm.entity.TypeColor"%>
-<%@page import="uuu.ogkm.entity.Outlet"%>
+<%@page import="com.ogkm.entity.DeliveryType"%>
+<%@page import="com.ogkm.entity.PaymentType"%>
+<%@page import="com.ogkm.entity.ShoppingCart"%>
+<%@page import="com.ogkm.entity.Product"%>
+<%@page import="com.ogkm.entity.Cartltem"%>
+<%@page import="com.ogkm.entity.TypeColor"%>
+<%@page import="com.ogkm.entity.Outlet"%>
 <%@ page pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>
