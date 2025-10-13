@@ -36,9 +36,14 @@
 				<li><a href="<%=request.getContextPath()%>">
 				    <i class="fas fa-home"></i>
             <p>首頁</p> </a></li>
+        <% if (member != null) {
+             boolean admin = member.isAdmin();
+             if (admin) {
+        %>
         <li><a href="<%=request.getContextPath()%>/addProduct.jsp">
             <i class="fas fa-edit"></i>
             <p>新增</p> </a></li>
+        <% } } %>
 				<li><a href="<%=request.getContextPath()%>/store.jsp?page=1">
 				    <i class="fas fa-archive"></i>
 						<p>商店</p> </a></li>

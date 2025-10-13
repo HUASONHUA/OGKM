@@ -1,4 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@page import="uuu.ogkm.entity.Customer"%>
+<%@page import="java.util.List"%>
 <!DOCTYPE html>
 <html>
 <head>
@@ -43,14 +45,14 @@ input, select, textarea {
 }
 </style>
 <script>
-function toggleFields() {
+  function toggleFields() {
     const mainCategory = document.getElementById("mainCategory").value;
     document.getElementById("musicCategoryDiv").style.display = mainCategory==="music"?"block":"none";
     document.getElementById("merchFields").style.display = mainCategory==="merch"?"block":"none";
-}
+  }
 
-let merchIndex = 0;
-function addMerch() {
+  let merchIndex = 0;
+  function addMerch() {
     const container = document.getElementById("merchContainer");
     const div = document.createElement("div");
     div.className = "merchGroup";
@@ -70,9 +72,9 @@ function addMerch() {
         <button type="button" onclick="this.parentElement.remove()">刪除此種類</button>
     `;
     container.appendChild(div);
-}
+  }
 
-function addSize(btn) {
+  function addSize(btn) {
     const group = btn.closest(".merchGroup");
     const index = group.getAttribute("data-index");
     const container = group.querySelector(".sizeContainer");
@@ -88,54 +90,67 @@ function addSize(btn) {
     `;
     console.log(`size_${index}`);
     container.appendChild(div);
-}
+  }
 </script>
 </head>
+
 <body>
-<h2>新增商品</h2>
-<form action="addProduct" method="post">
-<div class="section">
-    <h3>基本商品資訊</h3>
-    <label>商品名稱：</label><input type="text" name="name" required><br>
-    <label>歌手/品牌：</label><input type="text" name="singer"><br>
-    <label>描述：</label><textarea name="description" rows="3" cols="40"></textarea><br>
-    <label>折扣：</label><input type="number" step="0" name="discount" value="0"><br>
-    <label>封面圖片 URL：</label><input type="text" name="photoUrl"><br>
-    <label>商品類別：</label>
-    <select name="mainCategory" id="mainCategory" onchange="toggleFields()" required>
+<%
+  Customer member = (Customer)session.getAttribute("member");
+  if (member != null) {
+    boolean admin = member.isAdmin();
+    if (admin) {
+%>
+  <h2>新增商品</h2>
+  <form action="addProduct" method="post">
+    <div class="section">
+      <h3>基本商品資訊</h3>
+      <label>商品名稱：</label><input type="text" name="name" required><br>
+      <label>歌手/品牌：</label><input type="text" name="singer"><br>
+      <label>描述：</label><textarea name="description" rows="3" cols="40"></textarea><br>
+      <label>折扣：</label><input type="number" step="0" name="discount" value="0"><br>
+      <label>封面圖片 URL：</label><input type="text" name="photoUrl"><br>
+      <label>商品類別：</label>
+      <select name="mainCategory" id="mainCategory" onchange="toggleFields()" required>
         <option value="">請選擇</option>
         <option value="music">音樂</option>
         <option value="merch">周邊商品</option>
-    </select><br>
-</div>
+      </select><br>
+    </div>
 
-<!-- 音樂商品細分類 -->
-<div id="musicCategoryDiv" class="section" style="display:none;">
-    <h3>音樂商品資訊</h3>
-    <label>音樂分類：</label>
-    <select name="category">
+  <!-- 音樂商品細分類 -->
+    <div id="musicCategoryDiv" class="section" style="display:none;">
+      <h3>音樂商品資訊</h3>
+      <label>音樂分類：</label>
+      <select name="category">
         <option value="JPOP">JPOP</option>
         <option value="ANIME">ANIME</option>
         <option value="VOCALOID">VOCALOID</option>
         <option value="VTuber">VTuber</option>
-    </select><br>
-    <label>音樂檔案 URL：</label><input type="text" name="musicUrl"><br>
-    <label>試聽檔案 URL：</label><input type="text" name="auditionUrl"><br>
-    <label>單價：</label><input type="number" step="0" name="unitPrice"><br>
-    <input type="hidden" name="stock" value="1"><br>
-</div>
+      </select><br>
+      <label>音樂檔案 URL：</label><input type="text" name="musicUrl"><br>
+      <label>試聽檔案 URL：</label><input type="text" name="auditionUrl"><br>
+      <label>單價：</label><input type="number" step="0" name="unitPrice"><br>
+      <input type="hidden" name="stock" value="1"><br>
+    </div>
 
-<!-- 周邊商品欄位 -->
-<div id="merchFields" class="section" style="display:none;">
-    <h3>周邊商品資訊</h3>
-    <div id="merchContainer"></div>
-    <button type="button" onclick="addMerch()">新增周邊種類</button>
-</div>
+    <!-- 周邊商品欄位 -->
+    <div id="merchFields" class="section" style="display:none;">
+      <h3>周邊商品資訊</h3>
+      <div id="merchContainer"></div>
+      <button type="button" onclick="addMerch()">新增周邊種類</button>
+    </div>
 
-<div style="margin-top:20px;">
-    <button type="submit">送出</button>
-    <button type="reset">清除</button>
-</div>
-</form>
+    <div style="margin-top:20px;">
+      <button type="submit">送出</button>
+      <button type="reset">清除</button>
+    </div>
+  </form>
+  <% } else { %>
+    <h3>帳號無此權限</h3>
+  <% } %>
+<% } else { %>
+  <h3>無此權限</h3>
+<% } %>
 </body>
 </html>

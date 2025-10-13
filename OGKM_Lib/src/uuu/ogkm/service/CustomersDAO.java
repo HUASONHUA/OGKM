@@ -12,7 +12,7 @@ import uuu.ogkm.exception.OGKMException;
 public class CustomersDAO {
 	private static final  String SelectCustomer=
 			"SELECT id,name,email,password,birthday,gernder,"
-			+"address,address1,phone,subscribed,discount "
+			+"address,address1,phone,subscribed,discount,isAdmin "
 			+"FROM customers WHERE id=? OR email=?";
 	Customer selectCustomerById(String id) throws OGKMException{
 		Customer c =null;
@@ -43,9 +43,7 @@ public class CustomersDAO {
 						c.setAddress1(rs.getString("address1"));
 						c.setPhone(rs.getString("phone"));
 						c.setSubscribed(rs.getBoolean("subscribed"));
-//						 String blood=rs.getString("blood_type");
-//						 if(blood!=null) {
-//						c.setBloodType(BloodType.valueOf(blood));}
+						c.setAdmin(rs.getBoolean("isAdmin"));
 					 }	
 				}
 			} catch (SQLException e) {	
@@ -55,8 +53,8 @@ public class CustomersDAO {
 	}
 	private static final String INSERTCustomer="INSERT INTO customers"
            +"(id,name,email,password,birthday,gernder,"
-           +"address,address1,phone,subscribed)"
-		   +"VALUES(?,?,?,?,?,?,?,?,?,?)";
+           +"address,address1,phone,subscribed,isAdmin)"
+		   +"VALUES(?,?,?,?,?,?,?,?,?,?,?)";
 	void insert(Customer c) throws OGKMException {
 		
 		try (Connection connection = RDBConnection.getConnection();//1.2.取得連線
@@ -72,6 +70,7 @@ public class CustomersDAO {
 			pstmt.setString(8, c.getAddress1());
 			pstmt.setString(9, c.getPhone());
 			pstmt.setBoolean(10, c.isSubscribed());
+			pstmt.setBoolean(11, c.isAdmin());
 				
 			int rows=pstmt.executeUpdate();//執行指令
 			//System.out.println(rows);

@@ -19,7 +19,8 @@ import uuu.ogkm.entity.Customer;
 /**
  * Servlet Filter implementation class CheckLoginFilter
  */
-@WebFilter("/member/*")
+//@WebFilter("/member/*")
+@WebFilter(urlPatterns = { "/member/*", "/addProduct.jsp" } )
 public class CheckLoginFilter implements Filter {
 
   /**

@@ -23,6 +23,8 @@ public class Customer {
   private String phone = "";
   private boolean subscribed;
 
+  private boolean admin=false;
+
   public Customer() {}
 
   public Customer(String id, String name,
@@ -312,6 +314,14 @@ public class Customer {
   }
   // subscribed結束
 
+  public boolean isAdmin() {
+    return admin;
+  }
+
+  public void setAdmin(boolean admin) {
+    this.admin = admin;
+  }
+
   //@Override
   public String toString() {
     return this.getClass().getSimpleName() + ":"
@@ -325,7 +335,8 @@ public class Customer {
         + "\n地址:" + address
         + "\n地址1:" + address1
         + "\n電話:" + phone
-        + "\n訂閱電子報:" + subscribed;
+        + "\n訂閱電子報:" + subscribed
+        + "\n權限:" + admin;
   }
 
   @Override
