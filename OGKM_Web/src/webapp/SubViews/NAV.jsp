@@ -33,18 +33,22 @@
 					<input type="hidden" name="page" value="1">
           <input type="submit" value="搜尋">
 				</form>
-				<li><a href="<%=request.getContextPath()%>"><i class="fas fa-home"></i>
-						<p>首頁</p> </a></li>
+				<li><a href="<%=request.getContextPath()%>">
+				    <i class="fas fa-home"></i>
+            <p>首頁</p> </a></li>
+        <li><a href="<%=request.getContextPath()%>/addProduct.jsp">
+            <i class="fas fa-edit"></i>
+            <p>新增</p> </a></li>
 				<li><a href="<%=request.getContextPath()%>/store.jsp?page=1">
-				<i class="fas fa-archive"></i>
+				    <i class="fas fa-archive"></i>
 						<p>商店</p> </a></li>
-				<li><a href="<%=request.getContextPath()%>/register.jsp"><i
-						class="fas fa-edit"></i>
+				<li><a href="<%=request.getContextPath()%>/register.jsp">
+				    <i class="fas fa-edit"></i>
 						<p>註冊</p> </a></li>
 				<!--未登入出現-->
 				<% if (member == null) { %>
-				<li><a href="<%=request.getContextPath()%>/login.jsp"><i
-						class="fas fa-sign-in-alt"></i>
+				<li><a href="<%=request.getContextPath()%>/login.jsp">
+				    <i class="fas fa-sign-in-alt"></i>
 						<p>登入</p> </a></li>	
 				<!--登入出現-->
 				<% } else { %>
@@ -52,21 +56,22 @@
 						class="fas fa-sign-out-alt"></i>
 						<p>登出</p> </a></li>
 				<% } %>
-				<li><a href="<%=request.getContextPath()%>/member/member.jsp"><i class="fas fa-user"></i>
+				<li><a href="<%=request.getContextPath()%>/member/member.jsp">
+				    <i class="fas fa-user"></i>
 						<p class="username"><%=member!=null?member.getName():"用戶" %> </p></a></li>
 				<!--登入出現-->
 				<%--if (member != null) { --%>
 				<li><a href="<%=request.getContextPath()%>/member/cart.jsp">
-				<i class="fas fa-cart-arrow-down"></i>
-				<span class='cartQty'>${sessionScope.cart.getTotalQuantity()}</span>
-				<p>購物車</p> </a></li>
+				    <i class="fas fa-cart-arrow-down"></i>
+				    <span class='cartQty'>${sessionScope.cart.getTotalQuantity()}</span>
+				    <p>購物車</p> </a></li>
 						
 				<%--} --%>
-				<li class="lastli"><a href="<%=request.getContextPath()%>/member/MUSIC.jsp"><i
-				class="fas fa-headphones-alt"></i>
-				<p>線上聽</p> </a></li>
-				<li class="lastli"><a href="#ABUS"><i
-						class="fas fa-exclamation-circle"></i>
+				<li class="lastli"><a href="<%=request.getContextPath()%>/member/MUSIC.jsp">
+				    <i class="fas fa-headphones-alt"></i>
+				    <p>線上聽</p> </a></li>
+				<li class="lastli"><a href="#ABUS">
+				    <i class="fas fa-exclamation-circle"></i>
 						<p>關於</p> </a>
 						</li>
 <!-- 				<a href="#" class="burgerclose"><i class="fas fa-times"></i></a> -->
@@ -152,7 +157,7 @@ body {
 	color: #40dfd7;
 	/*選單文字顏色*/
 	text-decoration: none;
-	padding: 0.9em 0em 0.3em 0em;
+	padding: 0.8em 0em 0.3em 0em;
 	text-align: center;
 	/*文字置中*/
 }
