@@ -14,6 +14,16 @@ public class ProductService {
   public static final int PAGE_SIZE = 20;
   public static final int MERCH_PAGE_SIZE = 9;
   private ProductsDAO dao = new ProductsDAO();
+  public int addProduct(Product product) throws OGKMException {
+    return dao.insertProduct(product);
+  }
+
+  public int addMerchDetail(int productId , TypeColor typeColor) throws OGKMException {
+    return dao.insertProduct_merch(productId,typeColor);
+  }
+  public int addMerchSize(int productId , String typeColorName,Size size) throws OGKMException {
+    return dao.insertProduct_merch_sizes(productId,typeColorName,size);
+  }
 
   public int getTotalPages() throws OGKMException {
     int totalRecords = dao.countAllProducts();

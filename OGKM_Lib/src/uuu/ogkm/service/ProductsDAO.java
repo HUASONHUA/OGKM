@@ -1,9 +1,6 @@
 package uuu.ogkm.service;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
@@ -19,6 +16,89 @@ import uuu.ogkm.exception.DataInvalidException;
 import uuu.ogkm.exception.OGKMException;
 
 class ProductsDAO {
+  public int insertProduct_merch(int productId , TypeColor typeColor) throws OGKMException {
+    String sql = "INSERT INTO product_merch " +
+        "(product_id, typecolorname, colorphotourl, iconUrl, stock) " +
+        "VALUES (?, ?, ?, ?, ?)";
+    try (Connection connection = RDBConnection.getConnection();
+         PreparedStatement pstmt = connection.prepareStatement(sql)
+    ) {
+      pstmt.setInt(1,productId);
+      pstmt.setString(2, typeColor.getTypecolorname());
+      pstmt.setString(3, typeColor.getPhotourl());
+      pstmt.setString(4, typeColor.getIconUrl());
+      pstmt.setInt(5, typeColor.getStock());
+
+      return pstmt.executeUpdate();
+    } catch (SQLException e) {
+      throw new RuntimeException(e);
+    }
+  }
+
+  public int insertProduct_merch_sizes(int productId ,String typeColorName,Size size) throws OGKMException {
+    String sql = "INSERT INTO product_merch_sizes " +
+        "(product_id, typecolorname, size, stock, unitprice, ordinal) " +
+        "VALUES (?, ?, ?, ?, ?, ?)";
+
+    try (Connection connection = RDBConnection.getConnection();
+         PreparedStatement pstmt = connection.prepareStatement(sql)
+    ) {
+      pstmt.setInt(1,productId);
+      pstmt.setString(2, typeColorName);
+      pstmt.setString(3, size.getName());
+      pstmt.setInt(4, size.getStock());
+      pstmt.setDouble(5, size.getUnitprice());
+      pstmt.setInt(6, size.getOrdinal());
+
+      return pstmt.executeUpdate();
+    } catch (SQLException e) {
+      throw new RuntimeException(e);
+    }
+  }
+
+  // 插入 Product，回傳自增主鍵
+  public int insertProduct(Product product) throws OGKMException {
+    String sql = "INSERT INTO products " +
+        "(name, singer, category, unitPrice, photoUrl, description, discount, stock, musicUrl, auditionUrl) " +
+        "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+
+    try (Connection connection = RDBConnection.getConnection();
+         PreparedStatement pstmt = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)
+    ) {
+
+      pstmt.setString(1, product.getName());
+      pstmt.setString(2, product.getSinger());
+      pstmt.setString(3, product.getCategory());
+      pstmt.setDouble(4, product.getUnitPrice());
+      pstmt.setString(5, product.getPhotoUrl());
+      pstmt.setString(6, product.getDescription());
+
+      int discount = 0;
+      if (product instanceof Outlet) {
+        discount = ((Outlet) product).getDiscount();
+      }
+      pstmt.setInt(7,discount);
+
+      pstmt.setInt(8, product.getStock());
+      pstmt.setString(9, product.getMusicUrl());
+      pstmt.setString(10, product.getAuditionUrl());
+
+      pstmt.executeUpdate();
+
+      try (ResultSet rs = pstmt.getGeneratedKeys()) {
+        if (rs.next()) {
+          int productId = rs.getInt(1);
+          product.setId(productId); // 設回 Product 物件
+          return productId;
+        } else {
+          throw new OGKMException("取得 Product ID 失敗");
+        }
+      }
+    } catch (SQLException e) {
+      throw new RuntimeException(e);
+    }
+  }
+
   //總數
   public int countAllProducts() throws OGKMException {
     String sql = "SELECT COUNT(*) AS total FROM products WHERE category <> 'merch'";
