@@ -18,7 +18,7 @@ set OGKM_WEB_EXPLODED=%BASE_URL%\OGMK\OGKM_Web\build\webapp
 
 echo [1/5] 產生 OGKM_Lib.jar
 if not exist "%OGKM_LIB_JAR_OUTPUT%" mkdir "%OGKM_LIB_JAR_OUTPUT%"
-"%JDK_BIN%\jar.exe" cf "%OGKM_LIB_JAR_OUTPUT%\OGKM_Lib.jar" -C "%OGKM_LIB_BUILD%" uuu
+"%JDK_BIN%\jar.exe" cf "%OGKM_LIB_JAR_OUTPUT%\OGKM_Lib.jar" -C "%OGKM_LIB_BUILD%" com
 if errorlevel 1 (
     echo [錯誤] 產生 OGKM_Lib.jar 失敗
     pause
