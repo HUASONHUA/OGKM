@@ -1,0 +1,7 @@
+services:
+  - type: web
+    name: ogkm-java-web
+    env: java
+    plan: free
+    buildCommand: javac -d out OGKM_Lib/**/*.java OGKM_Web/**/*.java
+    startCommand: java -cp out OGKM_Web.MainServer
